@@ -23,8 +23,11 @@ public class BookService {
 
     public List<GetAllBooksResponse> getAllBooks() {
         List<Books> bookList = bookRepository.findAll();
+        System.out.println(bookList);
         List<GetAllBooksResponse> booksResponse = new ArrayList<>();
         for (Books book : bookList) {
+            System.out.println(book);
+            System.out.println(bookList);
             new GetAllBooksResponse(
                     book.getTitle(),
                     book.getAuthors(),
@@ -39,7 +42,7 @@ public class BookService {
 
     public BookForAddDto saveBook(BookForAddDto bookForAddDto) {
         Books book = new Books();
-        book.setAuthors(bookForAddDto.getAuthor());
+        book.setAuthors(bookForAddDto.getAuthors());
         book.setTitle(bookForAddDto.getTitle());
         book.setPublisher(bookForAddDto.getPublisher());
         book.setTotalCopies(bookForAddDto.getTotalCopies());

@@ -5,13 +5,9 @@ import lombok.*;
 
 import java.util.List;
 
+
 @Entity
 @Table(name = "books")
-@Setter
-@Getter
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Books {
 
     @Id
@@ -45,8 +41,11 @@ public class Books {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "publisher_id", nullable = false)
-
     private Publisher publisher;
+
+    public Books() {
+
+    }
 
     public int getId() {
         return id;
@@ -109,6 +108,17 @@ public class Books {
     }
 
     public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
+
+    public Books(int id, String title, int publishYear, List<Author> authors, Category category, int totalCopies, int availableCopies, Publisher publisher) {
+        this.id = id;
+        this.title = title;
+        this.publishYear = publishYear;
+        this.authors = authors;
+        this.category = category;
+        this.totalCopies = totalCopies;
+        this.availableCopies = availableCopies;
         this.publisher = publisher;
     }
 }
