@@ -26,7 +26,7 @@ public class BookController {
 
     // TODO:: check book
     @GetMapping("/{id}")
-    public GetBookForIdResponse getBookById(@RequestParam int id) {
+    public GetBookForIdResponse getBookById(@PathVariable int id) {
        return bookService.getBookForId(id);
 
     }

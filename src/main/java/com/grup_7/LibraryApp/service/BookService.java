@@ -22,22 +22,16 @@ public class BookService {
     }
 
     public List<GetAllBooksResponse> getAllBooks() {
-        List<Books> bookList = bookRepository.findAll();
-        System.out.println(bookList);
-        List<GetAllBooksResponse> booksResponse = new ArrayList<>();
-        for (Books book : bookList) {
-            System.out.println(book);
-            System.out.println(bookList);
-            new GetAllBooksResponse(
-                    book.getTitle(),
-                    book.getAuthors(),
-                    book.getAvailableCopies(),
-                    book.getCategory(),
-                    book.getPublisher()
-            );
-        }
-
-        return booksResponse;
+        return bookRepository.findAll()
+                .stream()
+                .map(book -> new GetAllBooksResponse(
+                        book.getTitle(),
+                        book.getAuthors(),
+                        book.getAvailableCopies(),
+                        book.getCategory(),
+                        book.getPublisher()
+                ))
+                .toList();
     }
 
     public BookForAddDto saveBook(BookForAddDto bookForAddDto) {
