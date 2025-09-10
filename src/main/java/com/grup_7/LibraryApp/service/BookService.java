@@ -10,7 +10,6 @@ import com.grup_7.LibraryApp.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -56,14 +55,14 @@ public class BookService {
     }
 
     public GetBookForIdResponse getBookForId(int id) {
-       Books book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
-       return new GetBookForIdResponse(
-               book.getTitle(),
-               book.getAuthors(),
-               book.getAvailableCopies(),
-               book.getCategory(),
-               book.getPublisher()
-       );
+        Books book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
+        return new GetBookForIdResponse(
+                book.getTitle(),
+                book.getAuthors(),
+                book.getAvailableCopies(),
+                book.getCategory(),
+                book.getPublisher()
+        );
 
     }
 }

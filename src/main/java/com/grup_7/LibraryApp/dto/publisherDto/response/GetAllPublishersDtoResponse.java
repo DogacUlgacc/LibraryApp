@@ -1,15 +1,14 @@
 package com.grup_7.LibraryApp.dto.publisherDto.response;
 
-public class CreatedPublisherResponse {
+public class GetAllPublishersDtoResponse {
+
     private String name;
     private String address;
 
-    public CreatedPublisherResponse() {
-    }
-    public CreatedPublisherResponse(String name, String address) {
+    public GetAllPublishersDtoResponse() {};
+    public GetAllPublishersDtoResponse(String name, String address) {
         this.name = name;
         this.address = address;
-
     }
 
     public String getName() {

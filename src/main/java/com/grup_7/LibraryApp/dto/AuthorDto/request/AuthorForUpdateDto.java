@@ -1,16 +1,16 @@
-package com.grup_7.LibraryApp.dto.AuthorDto.response;
+package com.grup_7.LibraryApp.dto.AuthorDto.request;
 
-public class GetAuthorByIdResponse {
+public class AuthorForUpdateDto {
     private int id;
     private String name;
     private String surname;
     private String phoneNumber;
     private String email;
 
-    public GetAuthorByIdResponse() {
+    public AuthorForUpdateDto() {
     }
 
-    public GetAuthorByIdResponse(int id, String name, String surname, String phoneNumber, String email) {
+    public AuthorForUpdateDto(int id, String name, String surname, String phoneNumber, String email) {
         this.id = id;
         this.name = name;
         this.surname = surname;

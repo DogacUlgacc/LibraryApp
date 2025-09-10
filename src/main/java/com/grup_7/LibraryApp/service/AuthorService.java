@@ -1,14 +1,13 @@
 package com.grup_7.LibraryApp.service;
 
-import com.grup_7.LibraryApp.dto.AuthorDto.request.CreateAuthorDtoRequest;
-import com.grup_7.LibraryApp.dto.AuthorDto.request.UpdateAuthorDtoRequest;
-import com.grup_7.LibraryApp.dto.AuthorDto.response.CreatedAuthorResponse;
+import com.grup_7.LibraryApp.dto.AuthorDto.request.AuthorForAddDto;
+import com.grup_7.LibraryApp.dto.AuthorDto.request.AuthorForUpdateDto;
 import com.grup_7.LibraryApp.dto.AuthorDto.response.GetAllAuthorsResponse;
 import com.grup_7.LibraryApp.dto.AuthorDto.response.GetAuthorByIdResponse;
-import com.grup_7.LibraryApp.dto.AuthorDto.response.UpdatedAuthorResponse;
 import com.grup_7.LibraryApp.entity.Author;
 import com.grup_7.LibraryApp.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class AuthorService {
                 .toList();
     }
 
-    public CreatedAuthorResponse saveAuthor(CreateAuthorDtoRequest dto) {
+    public AuthorForAddDto saveAuthor(AuthorForAddDto dto) {
         Author author = new Author();
         author.setName(dto.getName());
         author.setSurname(dto.getSurname());
@@ -43,8 +42,7 @@ public class AuthorService {
 
         Author saved = authorRepository.save(author);
 
-        return new CreatedAuthorResponse(
-                saved.getId(),
+        return new AuthorForAddDto(
                 saved.getName(),
                 saved.getSurname(),
                 saved.getPhoneNumber(),
@@ -65,16 +63,18 @@ public class AuthorService {
         );
     }
 
-    public UpdatedAuthorResponse updateAuthor(int id, UpdateAuthorDtoRequest dto){
+    public AuthorForUpdateDto updateAuthor(int id, AuthorForUpdateDto dto){
         Author author = authorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Yazar bulunamadı."));
 
+        if (dto.getName() != null) author.setName(dto.getName());
+        if (dto.getSurname() != null) author.setSurname(dto.getSurname());
         if (dto.getPhoneNumber() != null) author.setPhoneNumber(dto.getPhoneNumber());
         if (dto.getEmail() != null) author.setEmail(dto.getEmail());
 
         Author saved = authorRepository.save(author);
 
-        return new UpdatedAuthorResponse(
+        return new AuthorForUpdateDto(
                 saved.getId(),
                 saved.getName(),
                 saved.getSurname(),
