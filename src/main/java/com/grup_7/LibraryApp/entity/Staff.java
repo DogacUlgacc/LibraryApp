@@ -2,6 +2,7 @@ package com.grup_7.LibraryApp.entity;
 
 
 
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,5 +30,5 @@ public class Staff {
     private String email;
 
     @Column(name = "phone", length = 40)
-   private String phone;
+    private String phone;
 }
