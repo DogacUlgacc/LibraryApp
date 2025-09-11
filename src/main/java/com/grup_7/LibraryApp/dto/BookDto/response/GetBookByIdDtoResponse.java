@@ -3,21 +3,19 @@ package com.grup_7.LibraryApp.dto.BookDto.response;
 import com.grup_7.LibraryApp.entity.Author;
 import com.grup_7.LibraryApp.entity.Category;
 import com.grup_7.LibraryApp.entity.Publisher;
-import lombok.*;
 
 import java.util.List;
 
-
-
-public class GetAllBooksResponse {
-
+public class GetBookByIdDtoResponse {
     private String title;
     private List<Author> authors;
     private int availableCopies;
     private Category category;
     private Publisher publisher;
 
-    public GetAllBooksResponse(String title, List<Author> authors, int availableCopies, Category category, Publisher publisher) {
+    public GetBookByIdDtoResponse() {}
+
+    public GetBookByIdDtoResponse(String title, List<Author> authors, int availableCopies, Category category, Publisher publisher) {
         this.title = title;
         this.authors = authors;
         this.availableCopies = availableCopies;
