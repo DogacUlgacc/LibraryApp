@@ -1,11 +1,11 @@
 package com.grup_7.LibraryApp.controller;
 
-import com.grup_7.LibraryApp.dto.publisherDto.request.CreatePublisherDtoRequest;
-import com.grup_7.LibraryApp.dto.publisherDto.request.PublisherUpdateDtoRequest;
+import com.grup_7.LibraryApp.dto.publisherDto.request.CreatePublisherRequestDto;
+import com.grup_7.LibraryApp.dto.publisherDto.request.UpdatePublisherRequestDto;
 import com.grup_7.LibraryApp.dto.publisherDto.response.CreatedPublisherResponse;
-import com.grup_7.LibraryApp.dto.publisherDto.response.GetAllPublishersDtoResponse;
-import com.grup_7.LibraryApp.dto.publisherDto.response.GetPublisherByIdDtoResponse;
-import com.grup_7.LibraryApp.dto.publisherDto.response.PublisherUpdateDtoResponse;
+import com.grup_7.LibraryApp.dto.publisherDto.response.PublisherListResponseDto;
+import com.grup_7.LibraryApp.dto.publisherDto.response.PublisherResponseDto;
+import com.grup_7.LibraryApp.dto.publisherDto.response.UpdatedPublisherResponseDto;
 import com.grup_7.LibraryApp.service.PublisherService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,19 +23,19 @@ public class PublisherController {
     }
 
     @GetMapping
-    public List<GetAllPublishersDtoResponse> getAllPublishers() {
+    public List<PublisherListResponseDto> getAllPublishers() {
         return publisherService.getAllPublishers();
     }
 
     @GetMapping("/{id}")
-    public GetPublisherByIdDtoResponse getPublisherById(@PathVariable int id) {
+    public PublisherResponseDto getPublisherById(@PathVariable int id) {
         return publisherService.getPublisherByIdDtoResponse(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedPublisherResponse createPublisher(@RequestBody CreatePublisherDtoRequest request) {
-        return publisherService.addPublisher(request);
+    public CreatedPublisherResponse createPublisher(@RequestBody CreatePublisherRequestDto request) {
+        return publisherService.save(request);
     }
 
     @DeleteMapping("/{id}")
@@ -44,9 +44,10 @@ public class PublisherController {
     }
 
     @PutMapping("/{id}")
-    public PublisherUpdateDtoResponse updatePublisher(@PathVariable int id, @RequestBody PublisherUpdateDtoRequest request) {
+    public UpdatedPublisherResponseDto updatePublisher(@PathVariable int id, @RequestBody UpdatePublisherRequestDto request) {
         return publisherService.updatePublisher(id, request);
     }
+
 
 
 }
