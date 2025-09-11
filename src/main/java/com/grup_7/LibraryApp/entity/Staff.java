@@ -2,10 +2,7 @@ package com.grup_7.LibraryApp.entity;
 
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> e45bdeb (İlk commit)
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,9 +30,5 @@ public class Staff {
     private String email;
 
     @Column(name = "phone", length = 40)
-<<<<<<< HEAD
-   private String phone;
-=======
     private String phone;
->>>>>>> e45bdeb (İlk commit)
 }
