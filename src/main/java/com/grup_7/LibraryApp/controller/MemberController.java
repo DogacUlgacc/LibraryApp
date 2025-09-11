@@ -30,6 +30,8 @@ public class MemberController {
         return memberService.getMemberById(id);
     }
 
+
+    // TODO:: Auto increment member_id not working!
     @PostMapping()
     public CreatedMemberResponseDto save(@RequestBody CreateMemberRequestDto requestDto) {
         return memberService.save(requestDto);

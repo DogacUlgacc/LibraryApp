@@ -8,6 +8,7 @@ import com.grup_7.LibraryApp.dto.memberDto.response.MemberResponseDto;
 import com.grup_7.LibraryApp.dto.memberDto.response.UpdatedMemberResponseDto;
 import com.grup_7.LibraryApp.entity.Member;
 import com.grup_7.LibraryApp.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -48,15 +49,19 @@ public class MemberService {
 
 
     //TODO :: ResponseBody null değerler dönüyor. Check it
+
     public UpdatedMemberResponseDto update(UpdateMemberRequestDto requestDto, int id) {
         Member member = memberRepository.findById(id).orElseThrow(() -> new RuntimeException("Member not found"));
         member.setPhone(requestDto.getPhone());
         member.setAddress(requestDto.getAddress());
 
+        System.out.println(member.getEmail());
         memberRepository.save(member);
+        System.out.println(member.getEmail());
 
 
-        return new UpdatedMemberResponseDto(member.getName(), member.getSurname(), member.getEmail(), member.getPhone(), member.getAddress(), member.getStatus());
+        return new UpdatedMemberResponseDto(
+                member.getName(), member.getSurname(), member.getEmail(), member.getPhone(), member.getAddress(), member.getStatus());
     }
 
 

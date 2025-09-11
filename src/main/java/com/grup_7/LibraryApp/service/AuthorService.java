@@ -6,8 +6,10 @@ import com.grup_7.LibraryApp.dto.AuthorDto.response.GetAllAuthorsResponse;
 import com.grup_7.LibraryApp.dto.AuthorDto.response.GetAuthorByIdResponse;
 import com.grup_7.LibraryApp.entity.Author;
 import com.grup_7.LibraryApp.repository.AuthorRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 public class AuthorService {
 

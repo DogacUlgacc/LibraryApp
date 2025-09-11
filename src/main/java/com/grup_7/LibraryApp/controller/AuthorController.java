@@ -39,7 +39,7 @@ public class AuthorController {
         return authorService.updateAuthor(id, dto);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable int id){
         authorService.deleteAuthor(id);
     }
