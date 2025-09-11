@@ -3,10 +3,11 @@ package com.grup_7.LibraryApp.dto.BookDto.response;
 import com.grup_7.LibraryApp.entity.Author;
 import com.grup_7.LibraryApp.entity.Category;
 import com.grup_7.LibraryApp.entity.Publisher;
+import lombok.*;
 
 import java.util.List;
 
-public class BookUpdateDtoResponse {
+public class GetBookForIdResponse {
 
     private String title;
     private List<Author> authors;
@@ -14,11 +15,7 @@ public class BookUpdateDtoResponse {
     private Category category;
     private Publisher publisher;
 
-
-    public BookUpdateDtoResponse() {}
-
-
-    public BookUpdateDtoResponse(String title, List<Author> authors, int availableCopies, Category category, Publisher publisher) {
+    public GetBookForIdResponse(String title, List<Author> authors, int availableCopies, Category category, Publisher publisher) {
         this.title = title;
         this.authors = authors;
         this.availableCopies = availableCopies;
@@ -29,6 +26,7 @@ public class BookUpdateDtoResponse {
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -36,6 +34,7 @@ public class BookUpdateDtoResponse {
     public List<Author> getAuthors() {
         return authors;
     }
+
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
@@ -43,6 +42,7 @@ public class BookUpdateDtoResponse {
     public int getAvailableCopies() {
         return availableCopies;
     }
+
     public void setAvailableCopies(int availableCopies) {
         this.availableCopies = availableCopies;
     }
@@ -50,6 +50,7 @@ public class BookUpdateDtoResponse {
     public Category getCategory() {
         return category;
     }
+
     public void setCategory(Category category) {
         this.category = category;
     }
@@ -57,8 +58,8 @@ public class BookUpdateDtoResponse {
     public Publisher getPublisher() {
         return publisher;
     }
+
     public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
     }
 }
-

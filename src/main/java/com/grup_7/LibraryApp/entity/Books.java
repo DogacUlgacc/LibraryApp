@@ -1,6 +1,7 @@
 package com.grup_7.LibraryApp.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
@@ -35,13 +36,12 @@ public class Books {
     @Column(name = "total_copies")
     private int totalCopies;
 
-    @Column(name = "available_copies")
+    @Column(name = "avaible_copies")
     private int availableCopies;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "publisher_id", nullable = false)
     private Publisher publisher;
-    private List<Author> authorId;
 
     public Books() {
 
@@ -76,7 +76,7 @@ public class Books {
     }
 
     public void setAuthors(List<Author> authors) {
-        this.authorId = authors;
+        this.authors = authors;
     }
 
     public Category getCategory() {

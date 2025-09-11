@@ -1,11 +1,9 @@
 package com.grup_7.LibraryApp.controller;
 
-import com.grup_7.LibraryApp.dto.BookDto.request.CreateBookRequest;
-import com.grup_7.LibraryApp.dto.BookDto.request.BookUpdateDtoRequest;
-import com.grup_7.LibraryApp.dto.BookDto.response.BookUpdateDtoResponse;
-import com.grup_7.LibraryApp.dto.BookDto.response.CreatedBookResponse;
-import com.grup_7.LibraryApp.dto.BookDto.response.GetAllBooksDtoResponse;
-import com.grup_7.LibraryApp.dto.BookDto.response.GetBookByIdDtoResponse;
+import com.grup_7.LibraryApp.dto.BookDto.request.BookForAddDto;
+import com.grup_7.LibraryApp.dto.BookDto.response.GetAllBooksResponse;
+import com.grup_7.LibraryApp.dto.BookDto.response.GetBookForIdResponse;
+import com.grup_7.LibraryApp.entity.Books;
 import com.grup_7.LibraryApp.service.BookService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,34 +13,26 @@ import java.util.List;
 @RequestMapping("/books")
 public class BookController {
 
+    private final BookService bookService;
+
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
 
-    private final BookService bookService;
-
     @GetMapping("/all")
-    public List<GetAllBooksDtoResponse> getAllBooks() {
+    public List<GetAllBooksResponse> getAllBooks() {
         return bookService.getAllBooks();
-    }
-    @PutMapping("/{id}")
-    public BookUpdateDtoResponse updateBook(@PathVariable int id,
-                                            @RequestBody BookUpdateDtoRequest request) {
-        return bookService.updateBook(id, request);
     }
 
     // TODO:: check book
     @GetMapping("/{id}")
-    public GetBookByIdDtoResponse getBookById(@PathVariable int id) {
-        return bookService.getBookByIdDtoResponse(id);
+    public GetBookForIdResponse getBookById(@PathVariable int id) {
+       return bookService.getBookForId(id);
+
     }
 
     @PostMapping("/add")
-    public CreatedBookResponse addBook(@RequestBody CreateBookRequest request) {
-        return bookService.addBook(request);
-    }
-    @DeleteMapping
-    public void deleteBook(@PathVariable int id){
-        bookService.deleteBook(id);
+    public BookForAddDto addBook(@RequestBody BookForAddDto bookForAddDto) {
+        return bookService.saveBook(bookForAddDto);
     }
 }

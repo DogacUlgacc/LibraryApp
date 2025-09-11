@@ -1,6 +1,7 @@
 package com.grup_7.LibraryApp.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "categories")
