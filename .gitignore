@@ -31,5 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+<<<<<<< HEAD
 # Spring Boot config
 application.properties
+=======
+
+# Spring Boot config
+application.properties
+>>>>>>> 08d0665aa58c3a95d009c267cae6479e5708a01b
