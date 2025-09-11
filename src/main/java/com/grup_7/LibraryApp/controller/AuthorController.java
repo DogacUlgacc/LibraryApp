@@ -22,12 +22,12 @@ public class AuthorController {
 
     private final AuthorService authorService;
 
-    @GetMapping
+    @GetMapping("/all")
     public List<GetAllAuthorsResponse> getAll(){
         return authorService.getAllAuthors();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public GetAuthorByIdResponse getById(@PathVariable int id){
         return  authorService.getAuthorById(id);
     }

@@ -69,8 +69,6 @@ public class AuthorService {
         Author author = authorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Yazar bulunamadı."));
 
-        if (dto.getName() != null) author.setName(dto.getName());
-        if (dto.getSurname() != null) author.setSurname(dto.getSurname());
         if (dto.getPhoneNumber() != null) author.setPhoneNumber(dto.getPhoneNumber());
         if (dto.getEmail() != null) author.setEmail(dto.getEmail());
 

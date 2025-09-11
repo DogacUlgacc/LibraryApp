@@ -33,7 +33,6 @@ public class Loan {
     @JoinColumn(name = "staff_id")
     private Staff staff;
 
-    /* ===== Constructors ===== */
     public Loan() { }
 
     public Loan(Long id, Member member, Books book, LocalDate loanDate,
@@ -47,7 +46,6 @@ public class Loan {
         this.staff = staff;
     }
 
-    /* ===== Getters & Setters ===== */
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
