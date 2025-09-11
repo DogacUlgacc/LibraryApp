@@ -1,16 +1,18 @@
 package com.grup_7.LibraryApp.service;
 
-import com.grup_7.LibraryApp.dto.AuthorDto.request.AuthorForAddDto;
-import com.grup_7.LibraryApp.dto.AuthorDto.request.AuthorForUpdateDto;
+import com.grup_7.LibraryApp.dto.AuthorDto.request.CreateAuthorDtoRequest;
+import com.grup_7.LibraryApp.dto.AuthorDto.request.UpdateAuthorDtoRequest;
+import com.grup_7.LibraryApp.dto.AuthorDto.response.CreatedAuthorResponse;
 import com.grup_7.LibraryApp.dto.AuthorDto.response.GetAllAuthorsResponse;
 import com.grup_7.LibraryApp.dto.AuthorDto.response.GetAuthorByIdResponse;
+import com.grup_7.LibraryApp.dto.AuthorDto.response.UpdatedAuthorResponse;
 import com.grup_7.LibraryApp.entity.Author;
 import com.grup_7.LibraryApp.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
+@Service
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
@@ -32,7 +34,7 @@ public class AuthorService {
                 .toList();
     }
 
-    public AuthorForAddDto saveAuthor(AuthorForAddDto dto) {
+    public CreatedAuthorResponse saveAuthor(CreateAuthorDtoRequest dto) {
         Author author = new Author();
         author.setName(dto.getName());
         author.setSurname(dto.getSurname());
@@ -41,7 +43,8 @@ public class AuthorService {
 
         Author saved = authorRepository.save(author);
 
-        return new AuthorForAddDto(
+        return new CreatedAuthorResponse(
+                saved.getId(),
                 saved.getName(),
                 saved.getSurname(),
                 saved.getPhoneNumber(),
@@ -62,7 +65,7 @@ public class AuthorService {
         );
     }
 
-    public AuthorForUpdateDto updateAuthor(int id, AuthorForUpdateDto dto){
+    public UpdatedAuthorResponse updateAuthor(int id, UpdateAuthorDtoRequest dto){
         Author author = authorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Yazar bulunamadı."));
 
@@ -73,7 +76,7 @@ public class AuthorService {
 
         Author saved = authorRepository.save(author);
 
-        return new AuthorForUpdateDto(
+        return new UpdatedAuthorResponse(
                 saved.getId(),
                 saved.getName(),
                 saved.getSurname(),

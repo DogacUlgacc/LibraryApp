@@ -1,10 +1,13 @@
 package com.grup_7.LibraryApp.controller;
 
-import com.grup_7.LibraryApp.dto.AuthorDto.request.AuthorForAddDto;
-import com.grup_7.LibraryApp.dto.AuthorDto.request.AuthorForUpdateDto;
+import com.grup_7.LibraryApp.dto.AuthorDto.request.CreateAuthorDtoRequest;
+import com.grup_7.LibraryApp.dto.AuthorDto.request.UpdateAuthorDtoRequest;
+import com.grup_7.LibraryApp.dto.AuthorDto.response.CreatedAuthorResponse;
 import com.grup_7.LibraryApp.dto.AuthorDto.response.GetAllAuthorsResponse;
 import com.grup_7.LibraryApp.dto.AuthorDto.response.GetAuthorByIdResponse;
+import com.grup_7.LibraryApp.dto.AuthorDto.response.UpdatedAuthorResponse;
 import com.grup_7.LibraryApp.service.AuthorService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,13 +33,14 @@ public class AuthorController {
     }
 
     @PostMapping
-    public AuthorForAddDto addAuthor(@RequestBody AuthorForAddDto dto){
-        return authorService.saveAuthor(dto);
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreatedAuthorResponse addAuthor(@RequestBody CreateAuthorDtoRequest request){
+        return authorService.saveAuthor(request);
     }
 
     @PutMapping("{id}")
-    public AuthorForUpdateDto updateAuthor(@PathVariable int id, @RequestBody AuthorForUpdateDto dto){
-        return authorService.updateAuthor(id, dto);
+    public UpdatedAuthorResponse updateAuthor(@PathVariable int id, @RequestBody UpdateAuthorDtoRequest request){
+        return authorService.updateAuthor(id, request);
     }
 
     @DeleteMapping("/{id}")
