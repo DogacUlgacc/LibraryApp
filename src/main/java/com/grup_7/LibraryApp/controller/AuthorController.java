@@ -25,12 +25,12 @@ public class AuthorController {
     }
 
     @PostMapping
-}
-
-@PutMapping("{id}")
     }
 
-public void delete(@PathVariable int id){
-    authorService.deleteAuthor(id);
-}
+    @PutMapping("{id}")
+    }
+
+    public void delete(@PathVariable int id){
+        authorService.deleteAuthor(id);
+    }
 }
