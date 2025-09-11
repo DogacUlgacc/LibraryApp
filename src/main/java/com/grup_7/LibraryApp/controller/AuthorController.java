@@ -1,8 +1,13 @@
 package com.grup_7.LibraryApp.controller;
 
+import com.grup_7.LibraryApp.dto.AuthorDto.request.CreateAuthorDtoRequest;
+import com.grup_7.LibraryApp.dto.AuthorDto.request.UpdateAuthorDtoRequest;
+import com.grup_7.LibraryApp.dto.AuthorDto.response.CreatedAuthorResponse;
 import com.grup_7.LibraryApp.dto.AuthorDto.response.GetAllAuthorsResponse;
 import com.grup_7.LibraryApp.dto.AuthorDto.response.GetAuthorByIdResponse;
+import com.grup_7.LibraryApp.dto.AuthorDto.response.UpdatedAuthorResponse;
 import com.grup_7.LibraryApp.service.AuthorService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,22 +20,31 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
+    private final AuthorService authorService;
 
+    @GetMapping("/all")
     public List<GetAllAuthorsResponse> getAll(){
         return authorService.getAllAuthors();
     }
 
+    @GetMapping("/{id}")
     public GetAuthorByIdResponse getById(@PathVariable int id){
         return  authorService.getAuthorById(id);
     }
 
     @PostMapping
-}
-
-@PutMapping("{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreatedAuthorResponse addAuthor(@RequestBody CreateAuthorDtoRequest request){
+        return authorService.saveAuthor(request);
     }
 
-public void delete(@PathVariable int id){
-    authorService.deleteAuthor(id);
-}
+    @PutMapping("{id}")
+    public UpdatedAuthorResponse updateAuthor(@PathVariable int id, @RequestBody UpdateAuthorDtoRequest request){
+        return authorService.updateAuthor(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable int id){
+        authorService.deleteAuthor(id);
+    }
 }

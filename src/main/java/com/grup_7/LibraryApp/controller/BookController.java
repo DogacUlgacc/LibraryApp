@@ -3,6 +3,7 @@ package com.grup_7.LibraryApp.controller;
 import com.grup_7.LibraryApp.dto.BookDto.request.BookForAddDto;
 import com.grup_7.LibraryApp.dto.BookDto.response.GetAllBooksResponse;
 import com.grup_7.LibraryApp.dto.BookDto.response.GetBookForIdResponse;
+import com.grup_7.LibraryApp.entity.Books;
 import com.grup_7.LibraryApp.service.BookService;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class BookController {
     // TODO:: check book
     @GetMapping("/{id}")
     public GetBookForIdResponse getBookById(@PathVariable int id) {
-        return bookService.getBookForId(id);
+       return bookService.getBookForId(id);
 
     }
 
