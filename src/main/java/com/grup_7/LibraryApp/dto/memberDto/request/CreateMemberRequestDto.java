@@ -1,4 +1,4 @@
-package com.grup_7.LibraryApp.dto.memberDto.request;
+package com.grup_7.LibraryApp.dto.MemberDto.request;
 
 public class CreateMemberRequestDto {
 

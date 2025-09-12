@@ -2,7 +2,7 @@ package com.grup_7.LibraryApp.dto.StaffDto.response;
 
 
 public class GetStaffByIdResponse {
-    private Long id;
+    private int id;
     private String name;
     private String surname;
     private String role;
@@ -14,7 +14,7 @@ public class GetStaffByIdResponse {
 
 
     public GetStaffByIdResponse(int id, String name, String surname, String role, String email, String phone) {
-        this.id = id,
+        this.id = id;
         this.name = name;
         this.role = role;
         this.email = email;

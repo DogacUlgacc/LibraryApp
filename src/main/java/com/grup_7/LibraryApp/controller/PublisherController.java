@@ -22,7 +22,7 @@ public class PublisherController {
         this.publisherService = publisherService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<PublisherListResponseDto> getAllPublishers() {
         return publisherService.getAllPublishers();
     }

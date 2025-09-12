@@ -1,4 +1,4 @@
-package com.grup_7.LibraryApp.dto.memberDto.response;
+package com.grup_7.LibraryApp.dto.MemberDto.response;
 
 public class MemberResponseDto {
     private String name;
