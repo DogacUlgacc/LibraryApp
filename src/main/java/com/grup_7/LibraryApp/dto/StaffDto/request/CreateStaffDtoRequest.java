@@ -1,45 +1,24 @@
-package com.grup_7.LibraryApp.entity;
+package com.grup_7.LibraryApp.dto.StaffDto.request;
 
 
-import jakarta.persistence.*;
-import java.util.List;
-
-@Entity
-@Table(name = "staff")
-public class Staff {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "staff_id")
-    private int id;
-
-    @Column(name = "name")
+public class CreateStaffDtoRequest {
+   private int id;
     private String name;
-
-    @Column(name = "surname")
     private String surname;
-
-    @Column(name = "role")
     private String role;
-
-    @Column(name = "email")
     private String email;
-
-    @Column(name = "phone")
     private String phone;
 
+    public CreateStaffDtoRequest() {}
 
-    public Staff() {}
-    public Staff(int id, String name, String surname, String role, String email, String phone) {
+    public CreateStaffDtoRequest(int id, String name, String surname, String role, String email, String phone) {
         this.id = id;
         this.name = name;
-        this.surname = surname;
         this.role = role;
         this.email = email;
         this.phone = phone;
-
+        this.surname = surname;
     }
-
 
     public int getId() {
         return id;
@@ -73,19 +52,19 @@ public class Staff {
         this.role = role;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

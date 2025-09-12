@@ -1,53 +1,28 @@
-package com.grup_7.LibraryApp.entity;
+package com.grup_7.LibraryApp.dto.StaffDto.response;
 
+import java.security.SecureRandom;
 
-import jakarta.persistence.*;
-import java.util.List;
+public class CreatedStaffResponse {
 
-@Entity
-@Table(name = "staff")
-public class Staff {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "staff_id")
     private int id;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "surname")
     private String surname;
-
-    @Column(name = "role")
     private String role;
-
-    @Column(name = "email")
     private String email;
-
-    @Column(name = "phone")
     private String phone;
 
 
-    public Staff() {}
-    public Staff(int id, String name, String surname, String role, String email, String phone) {
+    public CreatedStaffResponse() {}
+
+    public CreatedStaffResponse(int id, String name, String surname, String role,String email, String phone) {
         this.id = id;
         this.name = name;
-        this.surname = surname;
         this.role = role;
         this.email = email;
         this.phone = phone;
-
+        this.surname = surname;
     }
 
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -55,6 +30,14 @@ public class Staff {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSurname() {
