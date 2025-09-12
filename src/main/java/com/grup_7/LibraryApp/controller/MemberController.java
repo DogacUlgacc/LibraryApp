@@ -1,11 +1,11 @@
 package com.grup_7.LibraryApp.controller;
 
-import com.grup_7.LibraryApp.dto.memberDto.request.CreateMemberRequestDto;
-import com.grup_7.LibraryApp.dto.memberDto.request.UpdateMemberRequestDto;
-import com.grup_7.LibraryApp.dto.memberDto.response.CreatedMemberResponseDto;
-import com.grup_7.LibraryApp.dto.memberDto.response.MemberListResponseDto;
-import com.grup_7.LibraryApp.dto.memberDto.response.MemberResponseDto;
-import com.grup_7.LibraryApp.dto.memberDto.response.UpdatedMemberResponseDto;
+import com.grup_7.LibraryApp.dto.MemberDto.request.CreateMemberRequestDto;
+import com.grup_7.LibraryApp.dto.MemberDto.request.UpdateMemberRequestDto;
+import com.grup_7.LibraryApp.dto.MemberDto.response.CreatedMemberResponseDto;
+import com.grup_7.LibraryApp.dto.MemberDto.response.MemberListResponseDto;
+import com.grup_7.LibraryApp.dto.MemberDto.response.MemberResponseDto;
+import com.grup_7.LibraryApp.dto.MemberDto.response.UpdatedMemberResponseDto;
 import com.grup_7.LibraryApp.service.MemberService;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +30,6 @@ public class MemberController {
         return memberService.getMemberById(id);
     }
 
-
-    // TODO:: Auto increment member_id not working!
     @PostMapping()
     public CreatedMemberResponseDto save(@RequestBody CreateMemberRequestDto requestDto) {
         return memberService.save(requestDto);

@@ -1,20 +1,31 @@
-package com.grup_7.LibraryApp.dto.MemberDto.response;
+package com.grup_7.LibraryApp.dto.StaffDto.request;
 
-public class CreatedMemberResponseDto {
+
+public class StaffForUpdateDtoRequest {
+   private int id;
     private String name;
     private String surname;
+    private String role;
     private String email;
     private String phone;
-    private String address;
-    private String status;
-    public CreatedMemberResponseDto() {}
-    public CreatedMemberResponseDto(String name, String surname, String email, String phone, String address, String status) {
+
+    public StaffForUpdateDtoRequest() {}
+
+  public StaffForUpdateDtoRequest(int id, String name, String surname, String role, String email, String phone){
+        this.id = id;
         this.name = name;
         this.surname = surname;
+        this.role = role;
         this.email = email;
         this.phone = phone;
-        this.address = address;
-        this.status = status;
+  }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -33,6 +44,14 @@ public class CreatedMemberResponseDto {
         this.surname = surname;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -48,20 +67,8 @@ public class CreatedMemberResponseDto {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }
+
+
+
+

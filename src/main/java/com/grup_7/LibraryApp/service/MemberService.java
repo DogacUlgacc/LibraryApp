@@ -1,11 +1,11 @@
 package com.grup_7.LibraryApp.service;
 
-import com.grup_7.LibraryApp.dto.memberDto.request.CreateMemberRequestDto;
-import com.grup_7.LibraryApp.dto.memberDto.request.UpdateMemberRequestDto;
-import com.grup_7.LibraryApp.dto.memberDto.response.CreatedMemberResponseDto;
-import com.grup_7.LibraryApp.dto.memberDto.response.MemberListResponseDto;
-import com.grup_7.LibraryApp.dto.memberDto.response.MemberResponseDto;
-import com.grup_7.LibraryApp.dto.memberDto.response.UpdatedMemberResponseDto;
+import com.grup_7.LibraryApp.dto.MemberDto.request.CreateMemberRequestDto;
+import com.grup_7.LibraryApp.dto.MemberDto.request.UpdateMemberRequestDto;
+import com.grup_7.LibraryApp.dto.MemberDto.response.CreatedMemberResponseDto;
+import com.grup_7.LibraryApp.dto.MemberDto.response.MemberListResponseDto;
+import com.grup_7.LibraryApp.dto.MemberDto.response.MemberResponseDto;
+import com.grup_7.LibraryApp.dto.MemberDto.response.UpdatedMemberResponseDto;
 import com.grup_7.LibraryApp.entity.Member;
 import com.grup_7.LibraryApp.repository.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -61,7 +61,12 @@ public class MemberService {
 
 
         return new UpdatedMemberResponseDto(
-                member.getName(), member.getSurname(), member.getEmail(), member.getPhone(), member.getAddress(), member.getStatus());
+                member.getName(),
+                member.getSurname(),
+                member.getEmail(),
+                member.getPhone(),
+                member.getAddress(),
+                member.getStatus());
     }
 
 
