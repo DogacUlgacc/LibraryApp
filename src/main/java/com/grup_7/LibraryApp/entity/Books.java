@@ -3,6 +3,7 @@ package com.grup_7.LibraryApp.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,7 +28,7 @@ public class Books {
             joinColumns = @JoinColumn(name = "book_id"),   // kitap id
             inverseJoinColumns = @JoinColumn(name = "author_id") // yazar id
     )
-    private List<Author> authors;
+    private List<Author> authors = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
@@ -36,7 +37,7 @@ public class Books {
     @Column(name = "total_copies")
     private int totalCopies;
 
-    @Column(name = "avaible_copies")
+    @Column(name = "available_copies")
     private int availableCopies;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

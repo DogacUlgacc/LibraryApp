@@ -55,9 +55,10 @@ public class MemberService {
         member.setPhone(requestDto.getPhone());
         member.setAddress(requestDto.getAddress());
 
-        System.out.println(member.getEmail());
+        System.out.println(member.toString());
+        System.out.println("****************");
         memberRepository.save(member);
-        System.out.println(member.getEmail());
+        System.out.println(member.toString());
 
 
         return new UpdatedMemberResponseDto(

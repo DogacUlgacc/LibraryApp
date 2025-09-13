@@ -1,7 +1,5 @@
 package com.grup_7.LibraryApp.dto.MemberDto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class UpdatedMemberResponseDto {
     private String name;
     private String surname;
@@ -13,7 +11,12 @@ public class UpdatedMemberResponseDto {
     public UpdatedMemberResponseDto(String name, String surname, String email, String phone, String address, String status) {
         this.name = name;
         this.surname = surname;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.status = status;
     }
+
 
     public String getName() {
         return name;

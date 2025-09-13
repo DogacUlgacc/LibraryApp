@@ -42,6 +42,20 @@ public class Member {
     public Member() {
     }
 
+    @Override
+    public String toString() {
+        return "Member{" +
+                "memberId=" + memberId +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", status='" + status + '\'' +
+                ", membershipDate=" + membershipDate +
+                '}';
+    }
+
     public Member(int memberId, String name, String surname, String email, String phone, String address, String status, LocalDate membershipDate) {
         this.memberId = memberId;
         this.name = name;
