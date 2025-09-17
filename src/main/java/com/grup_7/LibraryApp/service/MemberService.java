@@ -8,6 +8,7 @@ import com.grup_7.LibraryApp.dto.memberDto.response.MemberListResponseDto;
 import com.grup_7.LibraryApp.dto.memberDto.response.MemberResponseDto;
 import com.grup_7.LibraryApp.dto.memberDto.response.UpdatedMemberResponseDto;
 import com.grup_7.LibraryApp.entity.Member;
+import com.grup_7.LibraryApp.mapper.MemberMapper;
 import com.grup_7.LibraryApp.repository.MemberRepository;
 import com.grup_7.LibraryApp.rules.MemberBusinessRules;
 import jakarta.validation.Valid;
@@ -23,13 +24,20 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberBusinessRules memberBusinessRules;
-    public MemberService(MemberRepository memberRepository, MemberBusinessRules memberBusinessRules) {
+    private final MemberMapper memberMapper;
+    public MemberService(MemberRepository memberRepository, MemberBusinessRules memberBusinessRules, MemberMapper memberMapper) {
         this.memberRepository = memberRepository;
         this.memberBusinessRules = memberBusinessRules;
+        this.memberMapper = memberMapper;
     }
 
     public List<MemberListResponseDto> getAllMembers() {
-        return memberRepository.findAll().stream().map(member -> new MemberListResponseDto(member.getName(), member.getSurname(), member.getEmail(), member.getPhone(), member.getAddress(), member.getMembershipLevel())).toList();
+        return memberRepository.findAll().stream().map(member -> new MemberListResponseDto(member.getName()
+                , member.getSurname(),
+                member.getEmail(),
+                member.getPhone(),
+                member.getAddress(),
+                member.getMembershipLevel())).toList();
     }
 
     public CreatedMemberResponseDto save(@Valid CreateMemberRequestDto requestDto) {
