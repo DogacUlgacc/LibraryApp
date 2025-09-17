@@ -1,11 +1,11 @@
 package com.grup_7.LibraryApp.controller;
 
-import com.grup_7.LibraryApp.dto.StaffDto.request.CreateStaffDtoRequest;
-import com.grup_7.LibraryApp.dto.StaffDto.request.StaffForUpdateDtoRequest;
-import com.grup_7.LibraryApp.dto.StaffDto.response.CreatedStaffResponse;
-import com.grup_7.LibraryApp.dto.StaffDto.response.GetAllStaffResponse;
-import com.grup_7.LibraryApp.dto.StaffDto.response.GetStaffByIdResponse;
-import com.grup_7.LibraryApp.dto.StaffDto.response.StaffForUpdateResponse;
+import com.grup_7.LibraryApp.dto.staffDto.request.CreateStaffDtoRequest;
+import com.grup_7.LibraryApp.dto.staffDto.request.StaffForUpdateDtoRequest;
+import com.grup_7.LibraryApp.dto.staffDto.response.CreatedStaffResponse;
+import com.grup_7.LibraryApp.dto.staffDto.response.GetAllStaffResponse;
+import com.grup_7.LibraryApp.dto.staffDto.response.GetStaffByIdResponse;
+import com.grup_7.LibraryApp.dto.staffDto.response.StaffForUpdateResponse;
 import com.grup_7.LibraryApp.service.StaffService;
 import org.springframework.http.HttpStatus;
 

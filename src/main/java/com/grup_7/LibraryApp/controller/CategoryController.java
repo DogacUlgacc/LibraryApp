@@ -1,11 +1,11 @@
 package com.grup_7.LibraryApp.controller;
 
-import com.grup_7.LibraryApp.dto.CategoryDto.request.CategoryUpdateDtoRequest;
-import com.grup_7.LibraryApp.dto.CategoryDto.request.CreateCategoryDtoRequest;
-import com.grup_7.LibraryApp.dto.CategoryDto.response.CategoryUpdateDtoResponse;
-import com.grup_7.LibraryApp.dto.CategoryDto.response.CreatedCategoryResponse;
-import com.grup_7.LibraryApp.dto.CategoryDto.response.GetAllCategoriesDtoResponse;
-import com.grup_7.LibraryApp.dto.CategoryDto.response.GetCategoryByIdDtoResponse;
+import com.grup_7.LibraryApp.dto.categoryDto.request.CategoryUpdateDtoRequest;
+import com.grup_7.LibraryApp.dto.categoryDto.request.CreateCategoryDtoRequest;
+import com.grup_7.LibraryApp.dto.categoryDto.response.CategoryUpdateDtoResponse;
+import com.grup_7.LibraryApp.dto.categoryDto.response.CreatedCategoryResponse;
+import com.grup_7.LibraryApp.dto.categoryDto.response.GetAllCategoriesDtoResponse;
+import com.grup_7.LibraryApp.dto.categoryDto.response.GetCategoryByIdDtoResponse;
 import com.grup_7.LibraryApp.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

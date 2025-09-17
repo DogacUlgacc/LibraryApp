@@ -1,12 +1,12 @@
 package com.grup_7.LibraryApp.service;
 
-import com.grup_7.LibraryApp.dto.AuthorDto.response.GetAllAuthorsResponse;
-import com.grup_7.LibraryApp.dto.LoanDto.request.CreateLoanDtoRequest;
-import com.grup_7.LibraryApp.dto.LoanDto.request.UpdateLoanDtoRequest;
-import com.grup_7.LibraryApp.dto.LoanDto.response.CreatedLoanResponse;
-import com.grup_7.LibraryApp.dto.LoanDto.response.GetAllLoansDtoResponse;
-import com.grup_7.LibraryApp.dto.LoanDto.response.GetLoanByIdDtoResponse;
-import com.grup_7.LibraryApp.dto.LoanDto.response.UpdatedLoanResponse;
+import com.grup_7.LibraryApp.core.exception.type.BusinessException;
+import com.grup_7.LibraryApp.dto.loanDto.request.CreateLoanDtoRequest;
+import com.grup_7.LibraryApp.dto.loanDto.request.UpdateLoanDtoRequest;
+import com.grup_7.LibraryApp.dto.loanDto.response.CreatedLoanResponse;
+import com.grup_7.LibraryApp.dto.loanDto.response.GetAllLoansDtoResponse;
+import com.grup_7.LibraryApp.dto.loanDto.response.GetLoanByIdDtoResponse;
+import com.grup_7.LibraryApp.dto.loanDto.response.UpdatedLoanResponse;
 import com.grup_7.LibraryApp.entity.Books;
 import com.grup_7.LibraryApp.entity.Loan;
 import com.grup_7.LibraryApp.entity.Member;
@@ -15,6 +15,7 @@ import com.grup_7.LibraryApp.repository.BookRepository;
 import com.grup_7.LibraryApp.repository.LoanRepository;
 import com.grup_7.LibraryApp.repository.MemberRepository;
 import com.grup_7.LibraryApp.repository.StaffRepository;
+import com.grup_7.LibraryApp.rules.MemberBusinessRules;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -27,53 +28,30 @@ public class LoanService {
     private final MemberRepository memberRepository;
     private final BookRepository bookRepository;
     private final StaffRepository staffRepository;
+    private final MemberBusinessRules memberBusinessRules;
 
-
-    public LoanService(LoanRepository loanRepository,
-                       MemberRepository memberRepository,
-                       BookRepository bookRepository,
-                       StaffRepository staffRepository) {
+    public LoanService(LoanRepository loanRepository, MemberRepository memberRepository, BookRepository bookRepository, StaffRepository staffRepository, MemberBusinessRules memberBusinessRules) {
         this.loanRepository = loanRepository;
         this.memberRepository = memberRepository;
         this.bookRepository = bookRepository;
         this.staffRepository = staffRepository;
-
+        this.memberBusinessRules = memberBusinessRules;
     }
 
     public List<GetAllLoansDtoResponse> getAllLoans() {
-        return loanRepository.findAll()
-                .stream()
-                .map(l -> new GetAllLoansDtoResponse(
-                        Math.toIntExact(l.getId()),
-                        l.getMember().getMemberId(),
-                        l.getBook().getId(),
-                        l.getLoanDate(),
-                        l.getDueDate(),
-                        l.getReturnDate(),
-                        l.getStaff() != null ? l.getStaff().getId() : 0
-                ))
-                .toList();
+        return loanRepository.findAll().stream().map(l -> new GetAllLoansDtoResponse(Math.toIntExact(l.getId()), l.getMember().getMemberId(), l.getBook().getId(), l.getLoanDate(), l.getDueDate(), l.getReturnDate(), l.getStaff() != null ? l.getStaff().getId() : 0)).toList();
     }
 
     public GetLoanByIdDtoResponse getLoanById(int id) {
-        Loan l = loanRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ödünç kaydı bulunamadı."));
-        return new GetLoanByIdDtoResponse(
-                Math.toIntExact(l.getId()),
-                l.getMember().getMemberId(),
-                l.getBook().getId(),
-                l.getLoanDate(),
-                l.getDueDate(),
-                l.getReturnDate(),
-                l.getStaff() != null ? l.getStaff().getId() : 0
-        );
+        Loan l = loanRepository.findById(id).orElseThrow(() -> new RuntimeException("Ödünç kaydı bulunamadı."));
+        return new GetLoanByIdDtoResponse(Math.toIntExact(l.getId()), l.getMember().getMemberId(), l.getBook().getId(), l.getLoanDate(), l.getDueDate(), l.getReturnDate(), l.getStaff() != null ? l.getStaff().getId() : 0);
     }
 
     public CreatedLoanResponse createLoan(CreateLoanDtoRequest dto) {
-        Member member = memberRepository.findById(dto.getMemberId())
-                .orElseThrow(() -> new RuntimeException("Üye bulunamadı."));
-        Books book = bookRepository.findById(dto.getBookId())
-                .orElseThrow(() -> new RuntimeException("Kitap bulunamadı."));
+        Member member = memberRepository.findById(dto.getMemberId()).orElseThrow(() -> new BusinessException("Üye bulunamadı."));
+        Books book = bookRepository.findById(dto.getBookId()).orElseThrow(() -> new BusinessException("Kitap bulunamadı."));
+
+        memberBusinessRules.checkLoanLimit(member);
 
         Integer available = book.getAvailableCopies();
         if (available == null || available <= 0) {
@@ -81,7 +59,7 @@ public class LoanService {
         }
 
         LocalDate loanDate = dto.getLoanDate() != null ? dto.getLoanDate() : LocalDate.now();
-        LocalDate dueDate  = dto.getDueDate()  != null ? dto.getDueDate()  : loanDate.plusDays(14);
+        LocalDate dueDate = dto.getDueDate() != null ? dto.getDueDate() : loanDate.plusDays(14);
 
         Loan loan = new Loan();
         loan.setMember(member);
@@ -91,8 +69,7 @@ public class LoanService {
         loan.setReturnDate(null);
 
         if (dto.getStaffId() > 0) {
-            Staff staff = staffRepository.findById(dto.getStaffId())
-                    .orElseThrow(() -> new RuntimeException("Personel bulunamadı."));
+            Staff staff = staffRepository.findById(dto.getStaffId()).orElseThrow(() -> new RuntimeException("Personel bulunamadı."));
             loan.setStaff(staff);
         }
 
@@ -101,20 +78,11 @@ public class LoanService {
 
         Loan saved = loanRepository.save(loan);
 
-        return new CreatedLoanResponse(
-                Math.toIntExact(saved.getId()),
-                saved.getMember().getMemberId(),
-                saved.getBook().getId(),
-                saved.getLoanDate(),
-                saved.getDueDate(),
-                saved.getReturnDate(),
-                saved.getStaff() != null ? saved.getStaff().getId() : 0
-        );
+        return new CreatedLoanResponse(Math.toIntExact(saved.getId()), saved.getMember().getMemberId(), saved.getBook().getId(), saved.getLoanDate(), saved.getDueDate(), saved.getReturnDate(), saved.getStaff() != null ? saved.getStaff().getId() : 0);
     }
 
     public UpdatedLoanResponse updateLoan(int id, UpdateLoanDtoRequest dto) {
-        Loan loan = loanRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ödünç kaydı bulunamadı."));
+        Loan loan = loanRepository.findById(id).orElseThrow(() -> new RuntimeException("Ödünç kaydı bulunamadı."));
 
         if (dto.getReturnDate() != null) {
             if (loan.getReturnDate() != null) {
@@ -139,26 +107,17 @@ public class LoanService {
         }
 
         if (dto.getStaffId() > 0) {
-            Staff staff = staffRepository.findById(dto.getStaffId())
-                    .orElseThrow(() -> new RuntimeException("Personel bulunamadı."));
+            Staff staff = staffRepository.findById(dto.getStaffId()).orElseThrow(() -> new RuntimeException("Personel bulunamadı."));
             loan.setStaff(staff);
         }
 
         Loan saved = loanRepository.save(loan);
 
-        return new UpdatedLoanResponse(
-                Math.toIntExact(saved.getId()),
-                saved.getMember().getMemberId(),
-                saved.getBook().getId(),
-                saved.getLoanDate(),
-                saved.getDueDate(),
-                saved.getReturnDate(),
-                saved.getStaff() != null ? saved.getStaff().getId() : 0
-        );
+        return new UpdatedLoanResponse(Math.toIntExact(saved.getId()), saved.getMember().getMemberId(), saved.getBook().getId(), saved.getLoanDate(), saved.getDueDate(), saved.getReturnDate(), saved.getStaff() != null ? saved.getStaff().getId() : 0);
     }
+
     public void deleteLoan(int id) {
-        Loan loan = loanRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ödünç kaydı bulunamadı."));
+        Loan loan = loanRepository.findById(id).orElseThrow(() -> new RuntimeException("Ödünç kaydı bulunamadı."));
 
         if (loan.getReturnDate() == null) {
             Books book = loan.getBook();
@@ -169,12 +128,6 @@ public class LoanService {
 
         loanRepository.delete(loan);
     }
-
-
-
-
-
-
 
 
 }

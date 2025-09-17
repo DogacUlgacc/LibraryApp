@@ -1,11 +1,11 @@
 package com.grup_7.LibraryApp.controller;
 
-import com.grup_7.LibraryApp.dto.BookDto.request.CreateBookRequest;
-import com.grup_7.LibraryApp.dto.BookDto.request.BookUpdateDtoRequest;
-import com.grup_7.LibraryApp.dto.BookDto.response.BookUpdateDtoResponse;
-import com.grup_7.LibraryApp.dto.BookDto.response.CreatedBookResponse;
-import com.grup_7.LibraryApp.dto.BookDto.response.GetAllBooksDtoResponse;
-import com.grup_7.LibraryApp.dto.BookDto.response.GetBookByIdDtoResponse;
+import com.grup_7.LibraryApp.dto.bookDto.request.CreateBookRequest;
+import com.grup_7.LibraryApp.dto.bookDto.request.BookUpdateDtoRequest;
+import com.grup_7.LibraryApp.dto.bookDto.response.BookUpdateDtoResponse;
+import com.grup_7.LibraryApp.dto.bookDto.response.CreatedBookResponse;
+import com.grup_7.LibraryApp.dto.bookDto.response.GetAllBooksDtoResponse;
+import com.grup_7.LibraryApp.dto.bookDto.response.GetBookByIdDtoResponse;
 import com.grup_7.LibraryApp.service.BookService;
 import org.springframework.web.bind.annotation.*;
 

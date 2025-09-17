@@ -1,4 +1,6 @@
-package com.grup_7.LibraryApp.dto.MemberDto.response;
+package com.grup_7.LibraryApp.dto.memberDto.response;
+
+import com.grup_7.LibraryApp.enums.member.MembershipLevel;
 
 public class MemberResponseDto {
     private String name;
@@ -6,16 +8,18 @@ public class MemberResponseDto {
     private String email;
     private String phone;
     private String address;
-    private String status;
-    public MemberResponseDto() {}
-    public MemberResponseDto(String name, String surname, String email, String phone, String address, String status) {
+    private MembershipLevel membershipLevel;
+
+    public MemberResponseDto() {
+    }
+
+    public MemberResponseDto(String name, String surname, String email, String phone, String address, MembershipLevel membershipLevel) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.phone = phone;
         this.address = address;
-        this.status = status;
-
+        this.membershipLevel = membershipLevel;
     }
 
     public String getName() {
@@ -58,11 +62,6 @@ public class MemberResponseDto {
         this.address = address;
     }
 
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+
 }

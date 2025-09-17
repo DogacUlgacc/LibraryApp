@@ -1,11 +1,11 @@
 package com.grup_7.LibraryApp.service;
 
-import com.grup_7.LibraryApp.dto.AuthorDto.request.CreateAuthorDtoRequest;
-import com.grup_7.LibraryApp.dto.AuthorDto.request.UpdateAuthorDtoRequest;
-import com.grup_7.LibraryApp.dto.AuthorDto.response.CreatedAuthorResponse;
-import com.grup_7.LibraryApp.dto.AuthorDto.response.GetAllAuthorsResponse;
-import com.grup_7.LibraryApp.dto.AuthorDto.response.GetAuthorByIdResponse;
-import com.grup_7.LibraryApp.dto.AuthorDto.response.UpdatedAuthorResponse;
+import com.grup_7.LibraryApp.dto.authorDto.request.CreateAuthorDtoRequest;
+import com.grup_7.LibraryApp.dto.authorDto.request.UpdateAuthorDtoRequest;
+import com.grup_7.LibraryApp.dto.authorDto.response.CreatedAuthorResponse;
+import com.grup_7.LibraryApp.dto.authorDto.response.GetAllAuthorsResponse;
+import com.grup_7.LibraryApp.dto.authorDto.response.GetAuthorByIdResponse;
+import com.grup_7.LibraryApp.dto.authorDto.response.UpdatedAuthorResponse;
 import com.grup_7.LibraryApp.entity.Author;
 import com.grup_7.LibraryApp.repository.AuthorRepository;
 import org.springframework.stereotype.Service;

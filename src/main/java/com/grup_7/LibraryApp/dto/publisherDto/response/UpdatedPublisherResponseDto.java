@@ -5,6 +5,7 @@ public class UpdatedPublisherResponseDto {
     private String name;
     private String address;
 
+
     public UpdatedPublisherResponseDto(String name, String address) {
         this.name = name;
         this.address = address;

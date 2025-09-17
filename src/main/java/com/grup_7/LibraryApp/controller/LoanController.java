@@ -1,11 +1,11 @@
 package com.grup_7.LibraryApp.controller;
 
-import com.grup_7.LibraryApp.dto.LoanDto.request.CreateLoanDtoRequest;
-import com.grup_7.LibraryApp.dto.LoanDto.request.UpdateLoanDtoRequest;
-import com.grup_7.LibraryApp.dto.LoanDto.response.CreatedLoanResponse;
-import com.grup_7.LibraryApp.dto.LoanDto.response.GetAllLoansDtoResponse;
-import com.grup_7.LibraryApp.dto.LoanDto.response.GetLoanByIdDtoResponse;
-import com.grup_7.LibraryApp.dto.LoanDto.response.UpdatedLoanResponse;
+import com.grup_7.LibraryApp.dto.loanDto.request.CreateLoanDtoRequest;
+import com.grup_7.LibraryApp.dto.loanDto.request.UpdateLoanDtoRequest;
+import com.grup_7.LibraryApp.dto.loanDto.response.CreatedLoanResponse;
+import com.grup_7.LibraryApp.dto.loanDto.response.GetAllLoansDtoResponse;
+import com.grup_7.LibraryApp.dto.loanDto.response.GetLoanByIdDtoResponse;
+import com.grup_7.LibraryApp.dto.loanDto.response.UpdatedLoanResponse;
 import com.grup_7.LibraryApp.service.LoanService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

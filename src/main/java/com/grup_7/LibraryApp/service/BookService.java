@@ -1,8 +1,8 @@
 package com.grup_7.LibraryApp.service;
 
-import com.grup_7.LibraryApp.dto.BookDto.request.CreateBookRequest;
-import com.grup_7.LibraryApp.dto.BookDto.request.BookUpdateDtoRequest;
-import com.grup_7.LibraryApp.dto.BookDto.response.*;
+import com.grup_7.LibraryApp.dto.bookDto.request.CreateBookRequest;
+import com.grup_7.LibraryApp.dto.bookDto.request.BookUpdateDtoRequest;
+import com.grup_7.LibraryApp.dto.bookDto.response.*;
 import com.grup_7.LibraryApp.entity.Author;
 import com.grup_7.LibraryApp.entity.Books;
 import com.grup_7.LibraryApp.entity.Category;

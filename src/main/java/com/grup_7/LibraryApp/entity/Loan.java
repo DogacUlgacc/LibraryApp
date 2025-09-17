@@ -33,7 +33,7 @@ public class Loan {
     @JoinColumn(name = "staff_id")
     private Staff staff;
 
-    public Loan() { }
+    public Loan() {}
 
     public Loan(Long id, Member member, Books book, LocalDate loanDate,
                 LocalDate dueDate, LocalDate returnDate, Staff staff) {

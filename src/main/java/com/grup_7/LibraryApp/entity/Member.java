@@ -1,16 +1,15 @@
 package com.grup_7.LibraryApp.entity;
 
+import com.grup_7.LibraryApp.enums.member.MembershipLevel;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
-
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-
 @Table(name = "members")
 public class Member {
     @Id
@@ -24,47 +23,60 @@ public class Member {
     @Column(name = "surname", nullable = false, length = 100)
     private String surname;
 
-    @Column(name = "email", nullable = false, unique = true, length = 150)
+    @Column(name = "email", nullable = false, length = 150)
+    @Email(message = "Geçerli bir email giriniz")
+    @NotBlank
     private String email;
 
+    @NotBlank
     @Column(name = "phone", length = 20)
     private String phone;
 
     @Column(name = "address", length = 255)
     private String address;
 
-    @Column(name = "status", length = 50)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "membership_level", nullable = false, length = 20)
+    private MembershipLevel membershipLevel;
 
     @Column(name = "membership_date")
     private LocalDate membershipDate;
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<Loan> loans = new ArrayList<>();
+
     public Member() {
     }
 
-    @Override
-    public String toString() {
-        return "Member{" +
-                "memberId=" + memberId +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", status='" + status + '\'' +
-                ", membershipDate=" + membershipDate +
-                '}';
-    }
-
-    public Member(int memberId, String name, String surname, String email, String phone, String address, String status, LocalDate membershipDate) {
+    public Member(int memberId, String name, String surname, String email, String phone, String address, MembershipLevel membershipLevel, LocalDate membershipDate) {
         this.memberId = memberId;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.phone = phone;
         this.address = address;
-        this.status = status;
+        this.membershipLevel = membershipLevel;
         this.membershipDate = membershipDate;
+    }
+
+    public Member(int memberId, String name, String surname, String email, String phone, String address, MembershipLevel membershipLevel, LocalDate membershipDate, List<Loan> loans) {
+        this.memberId = memberId;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.membershipLevel = membershipLevel;
+        this.membershipDate = membershipDate;
+        this.loans = loans;
+    }
+
+    public MembershipLevel getMembershipLevel() {
+        return membershipLevel;
+    }
+
+    public void setMembershipLevel(MembershipLevel membershipLevel) {
+        this.membershipLevel = membershipLevel;
     }
 
     public int getMemberId() {
@@ -115,19 +127,19 @@ public class Member {
         this.address = address;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public LocalDate getMembershipDate() {
         return membershipDate;
     }
 
     public void setMembershipDate(LocalDate membershipDate) {
         this.membershipDate = membershipDate;
+    }
+
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
     }
 }
