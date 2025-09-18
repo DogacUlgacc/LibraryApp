@@ -1,16 +1,18 @@
 package com.grup_7.LibraryApp.service;
 
+import com.grup_7.LibraryApp.dto.bookDto.request.BookStatusUpdateRequestDto;
 import com.grup_7.LibraryApp.dto.bookDto.request.CreateBookRequest;
 import com.grup_7.LibraryApp.dto.bookDto.request.BookUpdateDtoRequest;
 import com.grup_7.LibraryApp.dto.bookDto.response.*;
 import com.grup_7.LibraryApp.entity.Author;
-import com.grup_7.LibraryApp.entity.Books;
+import com.grup_7.LibraryApp.entity.Book;
 import com.grup_7.LibraryApp.entity.Category;
 import com.grup_7.LibraryApp.entity.Publisher;
 import com.grup_7.LibraryApp.repository.AuthorRepository;
 import com.grup_7.LibraryApp.repository.BookRepository;
 import com.grup_7.LibraryApp.repository.CategoryRepository;
 import com.grup_7.LibraryApp.repository.PublisherRepository;
+import com.grup_7.LibraryApp.rules.BookBusinessRules;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,15 +24,17 @@ public class BookService {
     private final AuthorRepository authorRepository;
     private final CategoryRepository categoryRepository;
     private final PublisherRepository publisherRepository;
+    private final BookBusinessRules bookBusinessRules;
 
     public BookService(BookRepository bookRepository,
                        AuthorRepository authorRepository,
                        CategoryRepository categoryRepository,
-                       PublisherRepository publisherRepository) {
+                       PublisherRepository publisherRepository, BookBusinessRules bookBusinessRules) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.categoryRepository = categoryRepository;
         this.publisherRepository = publisherRepository;
+        this.bookBusinessRules = bookBusinessRules;
     }
 
     public List<GetAllBooksDtoResponse> getAllBooks() {
@@ -49,7 +53,11 @@ public class BookService {
     }
 
     public CreatedBookResponse addBook(CreateBookRequest request) {
-        Books book = new Books();
+        bookBusinessRules.isbnMustUnique(request.getIsbn());
+        bookBusinessRules.totalCopiesMustBeNonNegative(request.getTotalCopies());
+
+
+        Book book = new Book();
 
         book.setTitle(request.getTitle());
         if (request.getPublishYear() != null) book.setPublishYear(request.getPublishYear());
@@ -71,7 +79,7 @@ public class BookService {
                 .orElseThrow(() -> new RuntimeException("Yayınevi bulunamadı: " + request.getPublisherId()));
         book.setPublisher(publisher);
 
-        Books saved = bookRepository.save(book);
+        Book saved = bookRepository.save(book);
 
         return new CreatedBookResponse(
                 saved.getTitle(),
@@ -85,7 +93,7 @@ public class BookService {
     }
 
     public GetBookByIdDtoResponse getBookByIdDtoResponse(int id) {
-        Books book = bookRepository.findById(id)
+        Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Kitap bulunamadı: " + id));
 
         return new GetBookByIdDtoResponse(
@@ -100,8 +108,9 @@ public class BookService {
     }
 
     public BookUpdateDtoResponse updateBook(int id, BookUpdateDtoRequest req) {
-        Books book = bookRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Kitap bulunamadı: " + id));
+        bookBusinessRules.availableCopiesMustBeValid(req.getAvailableCopies(),req.getTotalCopies());
+        bookBusinessRules.totalCopiesMustBeNonNegative(req.getTotalCopies());
+        Book book = bookBusinessRules.bookShouldExistWithGivenId(id);
 
         if (req.getTitle() != null && !req.getTitle().isBlank()) book.setTitle(req.getTitle());
         if (req.getPublishYear() != null) book.setPublishYear(req.getPublishYear());
@@ -126,7 +135,7 @@ public class BookService {
             book.setPublisher(publisher);
         }
 
-        Books saved = bookRepository.save(book);
+        Book saved = bookRepository.save(book);
 
         return new BookUpdateDtoResponse(
                 saved.getTitle(),
@@ -141,5 +150,24 @@ public class BookService {
 
     public void deleteBook(int id) {
         bookRepository.deleteById(id);
+    }
+
+    public BookStatusUpdatedResponse updateBookStatus(int id, BookStatusUpdateRequestDto statusUpdateRequestDto) {
+        Book bookForUpdateStatus = bookBusinessRules.bookShouldExistWithGivenId(id);
+        bookForUpdateStatus.setStatus(statusUpdateRequestDto.getStatus());
+        Book updatedBook = bookRepository.save(bookForUpdateStatus);
+        BookStatusUpdatedResponse response = new BookStatusUpdatedResponse();
+        response.setTitle(updatedBook.getTitle());
+        List<BookAuthorDto> authorDtos = updatedBook.getAuthors().stream()
+                .map(author -> new BookAuthorDto(author.getName(), author.getSurname()))
+                .toList();
+        response.setAuthors(authorDtos);
+        response.setCategory(new BookCategoryDto(updatedBook.getCategory().getName()));
+        Publisher publisher = updatedBook.getPublisher();
+        response.setPublisher(new BookPublisherDto(publisher.getName(), publisher.getAddress()));
+        response.setStatus(updatedBook.getStatus());
+
+        return response;
+
     }
 }

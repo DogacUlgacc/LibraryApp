@@ -1,6 +1,6 @@
 package com.grup_7.LibraryApp.dto.authorDto.response;
 
-import com.grup_7.LibraryApp.entity.Books;
+import com.grup_7.LibraryApp.entity.Book;
 import com.grup_7.LibraryApp.entity.Member;
 import com.grup_7.LibraryApp.entity.Staff;
 
@@ -13,7 +13,7 @@ public class GetAllAuthorsResponse {
     private String phoneNumber;
     private String email;
 
-    public GetAllAuthorsResponse(Long id, Member member, Books book, LocalDate loanDate, LocalDate dueDate, LocalDate returnDate, Staff staff) {
+    public GetAllAuthorsResponse(Long id, Member member, Book book, LocalDate loanDate, LocalDate dueDate, LocalDate returnDate, Staff staff) {
     }
 
     public GetAllAuthorsResponse(int id, String name, String surname, String phoneNumber, String email) {

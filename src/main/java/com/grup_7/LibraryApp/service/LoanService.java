@@ -7,7 +7,7 @@ import com.grup_7.LibraryApp.dto.loanDto.response.CreatedLoanResponse;
 import com.grup_7.LibraryApp.dto.loanDto.response.GetAllLoansDtoResponse;
 import com.grup_7.LibraryApp.dto.loanDto.response.GetLoanByIdDtoResponse;
 import com.grup_7.LibraryApp.dto.loanDto.response.UpdatedLoanResponse;
-import com.grup_7.LibraryApp.entity.Books;
+import com.grup_7.LibraryApp.entity.Book;
 import com.grup_7.LibraryApp.entity.Loan;
 import com.grup_7.LibraryApp.entity.Member;
 import com.grup_7.LibraryApp.entity.Staff;
@@ -49,7 +49,7 @@ public class LoanService {
 
     public CreatedLoanResponse createLoan(CreateLoanDtoRequest dto) {
         Member member = memberRepository.findById(dto.getMemberId()).orElseThrow(() -> new BusinessException("Üye bulunamadı."));
-        Books book = bookRepository.findById(dto.getBookId()).orElseThrow(() -> new BusinessException("Kitap bulunamadı."));
+        Book book = bookRepository.findById(dto.getBookId()).orElseThrow(() -> new BusinessException("Kitap bulunamadı."));
 
         memberBusinessRules.checkLoanLimit(member);
 
@@ -90,7 +90,7 @@ public class LoanService {
             }
             loan.setReturnDate(dto.getReturnDate());
 
-            Books book = loan.getBook();
+            Book book = loan.getBook();
             Integer available = book.getAvailableCopies();
             book.setAvailableCopies((available == null ? 0 : available) + 1);
             bookRepository.save(book);
@@ -120,7 +120,7 @@ public class LoanService {
         Loan loan = loanRepository.findById(id).orElseThrow(() -> new RuntimeException("Ödünç kaydı bulunamadı."));
 
         if (loan.getReturnDate() == null) {
-            Books book = loan.getBook();
+            Book book = loan.getBook();
             Integer available = book.getAvailableCopies();
             book.setAvailableCopies((available == null ? 0 : available) + 1);
             bookRepository.save(book);

@@ -8,7 +8,7 @@ public class BookUpdateDtoRequest {
     private Integer totalCopies;
     private Integer availableCopies;
     private Integer publisherId;
-
+    
     public BookUpdateDtoRequest() { }
 
     public String getTitle() { return title; }

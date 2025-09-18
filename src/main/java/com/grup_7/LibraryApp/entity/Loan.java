@@ -18,7 +18,7 @@ public class Loan {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "book_id", nullable = false)
-    private Books book;
+    private Book book;
 
     @Column(name = "loan_date")
     private LocalDate loanDate;
@@ -35,7 +35,7 @@ public class Loan {
 
     public Loan() {}
 
-    public Loan(Long id, Member member, Books book, LocalDate loanDate,
+    public Loan(Long id, Member member, Book book, LocalDate loanDate,
                 LocalDate dueDate, LocalDate returnDate, Staff staff) {
         this.id = id;
         this.member = member;
@@ -52,8 +52,8 @@ public class Loan {
     public Member getMember() { return member; }
     public void setMember(Member member) { this.member = member; }
 
-    public Books getBook() { return book; }
-    public void setBook(Books book) { this.book = book; }
+    public Book getBook() { return book; }
+    public void setBook(Book book) { this.book = book; }
 
     public LocalDate getLoanDate() { return loanDate; }
     public void setLoanDate(LocalDate loanDate) { this.loanDate = loanDate; }

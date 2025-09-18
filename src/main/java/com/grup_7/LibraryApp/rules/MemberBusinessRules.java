@@ -6,7 +6,6 @@ import com.grup_7.LibraryApp.enums.member.MembershipLevel;
 import com.grup_7.LibraryApp.repository.MemberRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
 
 @Component
 public class MemberBusinessRules {

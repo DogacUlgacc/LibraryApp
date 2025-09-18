@@ -1,7 +1,7 @@
 package com.grup_7.LibraryApp.entity;
 
+import com.grup_7.LibraryApp.enums.book.BookStatus;
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "books")
-public class Books {
+public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +23,7 @@ public class Books {
     private int publishYear;
 
     @ManyToMany
-    @JoinTable(
-            name = "book_authors",               // ara tablo adı
+    @JoinTable(name = "book_authors",               // ara tablo adı
             joinColumns = @JoinColumn(name = "book_id"),   // kitap id
             inverseJoinColumns = @JoinColumn(name = "author_id") // yazar id
     )
@@ -44,8 +43,14 @@ public class Books {
     @JoinColumn(name = "publisher_id", nullable = false)
     private Publisher publisher;
 
-    public Books() {
+    @Column(name = "isbn", nullable = false, unique = true, length = 20)
+    private String isbn;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private BookStatus status = BookStatus.ACTIVE;
+
+    public Book() {
     }
 
     public int getId() {
@@ -112,7 +117,23 @@ public class Books {
         this.publisher = publisher;
     }
 
-    public Books(int id, String title, int publishYear, List<Author> authors, Category category, int totalCopies, int availableCopies, Publisher publisher) {
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public BookStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookStatus status) {
+        this.status = status;
+    }
+
+    public Book(int id, String title, int publishYear, List<Author> authors, Category category, int totalCopies, int availableCopies, Publisher publisher) {
         this.id = id;
         this.title = title;
         this.publishYear = publishYear;

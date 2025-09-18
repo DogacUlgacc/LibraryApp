@@ -25,7 +25,7 @@ public class Author {
     private String email;
 
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
-    private List<Books> books;
+    private List<Book> books;
 
     public Author() {
     }
@@ -73,10 +73,10 @@ public class Author {
         this.email = email;
     }
 
-    public List<Books> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
-    public void setBooks(List<Books> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 }

@@ -1,11 +1,9 @@
 package com.grup_7.LibraryApp.controller;
 
+import com.grup_7.LibraryApp.dto.bookDto.request.BookStatusUpdateRequestDto;
 import com.grup_7.LibraryApp.dto.bookDto.request.CreateBookRequest;
 import com.grup_7.LibraryApp.dto.bookDto.request.BookUpdateDtoRequest;
-import com.grup_7.LibraryApp.dto.bookDto.response.BookUpdateDtoResponse;
-import com.grup_7.LibraryApp.dto.bookDto.response.CreatedBookResponse;
-import com.grup_7.LibraryApp.dto.bookDto.response.GetAllBooksDtoResponse;
-import com.grup_7.LibraryApp.dto.bookDto.response.GetBookByIdDtoResponse;
+import com.grup_7.LibraryApp.dto.bookDto.response.*;
 import com.grup_7.LibraryApp.service.BookService;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +23,15 @@ public class BookController {
     public List<GetAllBooksDtoResponse> getAllBooks() {
         return bookService.getAllBooks();
     }
+
     @PutMapping("/{id}")
-    public BookUpdateDtoResponse updateBook(@PathVariable int id,
-                                            @RequestBody BookUpdateDtoRequest request) {
+    public BookUpdateDtoResponse updateBook(@PathVariable int id, @RequestBody BookUpdateDtoRequest request) {
         return bookService.updateBook(id, request);
+    }
+
+    @PutMapping("{id}/status")
+    public BookStatusUpdatedResponse updateBookStatus(@PathVariable int id, BookStatusUpdateRequestDto statusUpdateRequestDto) {
+        return bookService.updateBookStatus(id,statusUpdateRequestDto);
     }
 
     // TODO:: check book
@@ -41,6 +44,7 @@ public class BookController {
     public CreatedBookResponse addBook(@RequestBody CreateBookRequest request) {
         return bookService.addBook(request);
     }
+
     @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable int id) {
         bookService.deleteBook(id);
