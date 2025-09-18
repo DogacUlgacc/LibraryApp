@@ -25,6 +25,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberBusinessRules memberBusinessRules;
     private final MemberMapper memberMapper;
+
     public MemberService(MemberRepository memberRepository, MemberBusinessRules memberBusinessRules, MemberMapper memberMapper) {
         this.memberRepository = memberRepository;
         this.memberBusinessRules = memberBusinessRules;
@@ -32,12 +33,7 @@ public class MemberService {
     }
 
     public List<MemberListResponseDto> getAllMembers() {
-        return memberRepository.findAll().stream().map(member -> new MemberListResponseDto(member.getName()
-                , member.getSurname(),
-                member.getEmail(),
-                member.getPhone(),
-                member.getAddress(),
-                member.getMembershipLevel())).toList();
+        return memberMapper.toMemberListResponseDtoList(memberRepository.findAll());
     }
 
     public CreatedMemberResponseDto save(@Valid CreateMemberRequestDto requestDto) {
@@ -45,44 +41,26 @@ public class MemberService {
         memberBusinessRules.phoneNumberMustNotExistWithSamePhoneNumber(requestDto.getPhone());
         memberBusinessRules.validatePhoneNumber(requestDto.getPhone());
 
-        Member member = new Member();
-        member.setName(requestDto.getName());
-        member.setSurname(requestDto.getSurname());
-        member.setEmail(requestDto.getEmail());
-        member.setPhone(requestDto.getPhone());
-        member.setAddress(requestDto.getAddress());
-        member.setMembershipLevel(requestDto.getMembershipLevel());
-        member.setMembershipDate(LocalDate.now());
-
+        Member member = memberMapper.toMember(requestDto);
         Member savedMember = memberRepository.save(member);
-        return new CreatedMemberResponseDto(savedMember.getName(), savedMember.getSurname(), savedMember.getEmail(), savedMember.getPhone(), savedMember.getAddress(), savedMember.getMembershipLevel());
-    }
+
+         return memberMapper.toCreatedMemberResponseDto(savedMember);}
 
     public MemberResponseDto getMemberById(int id) {
-        Member member = memberRepository.findById(id).orElseThrow(() -> new RuntimeException("Member not found"));
-        return new MemberResponseDto(member.getName(), member.getSurname(), member.getEmail(), member.getPhone(), member.getAddress(), member.getMembershipLevel());
+        Member member = memberRepository.findById(id).orElseThrow(() -> new BusinessException("Member not found"));
+        return memberMapper.toMemberResponseDto(member);
     }
 
     public UpdatedMemberResponseDto update(UpdateMemberRequestDto requestDto, int id) {
-        Member member = memberRepository.findById(id).orElseThrow(() -> new RuntimeException("Member not found"));
-        member.setPhone(requestDto.getPhone());
-        member.setAddress(requestDto.getAddress());
+        memberBusinessRules.validatePhoneNumber(requestDto.getPhone());
 
-        System.out.println(member.toString());
-        System.out.println("****************");
-        memberRepository.save(member);
-        System.out.println(member.toString());
+        Member member = memberRepository.findById(id).orElseThrow(() -> new BusinessException("Member not found"));
+        memberMapper.updateMemberFromDto(requestDto, member);
 
+        Member updatedMember = memberRepository.save(member);
 
-        return new UpdatedMemberResponseDto(
-                member.getName(),
-                member.getSurname(),
-                member.getEmail(),
-                member.getPhone(),
-                member.getAddress(),
-                member.getMembershipLevel());
+        return memberMapper.toUpdatedMemberResponseDto(updatedMember);
     }
-
     public void delete(int id) {
         memberRepository.findById(id).orElseThrow(() -> new BusinessException("Böyle bir üye bulunamadı."));
         memberRepository.deleteById(id);
