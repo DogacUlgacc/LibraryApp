@@ -3,6 +3,7 @@ package com.grup_7.LibraryApp.rules;
 import com.grup_7.LibraryApp.core.exception.type.BusinessException;
 import com.grup_7.LibraryApp.entity.Book;
 import com.grup_7.LibraryApp.entity.Member;
+import com.grup_7.LibraryApp.enums.book.BookStatus;
 import com.grup_7.LibraryApp.repository.BookRepository;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +40,11 @@ public class BookBusinessRules {
         }
         if (availableCopies > totalCopies) {
             throw new BusinessException("Mevcut kopya sayısı toplam kopya sayısını aşamaz.");
+        }
+    }
+    public void bookMustBeActive(Book book) {
+        if (book.getStatus() == BookStatus.INACTIVE) {
+            throw new BusinessException("Kitap INACTIVE olduğu için ödünç verilemez veya rezervasyon alınamaz.");
         }
     }
 
