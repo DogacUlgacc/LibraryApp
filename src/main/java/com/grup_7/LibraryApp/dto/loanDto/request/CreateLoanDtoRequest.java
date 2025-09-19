@@ -1,12 +1,27 @@
 package com.grup_7.LibraryApp.dto.loanDto.request;
 
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.time.LocalDate;
 
 public class CreateLoanDtoRequest {
+
+    @NotNull
+    @Positive
     private int memberId;
+
+    @NotNull
+    @Positive
     private int bookId;
+
+    @FutureOrPresent
     private LocalDate loanDate;
+
     private LocalDate dueDate;
+
+    @NotNull
     private int staffId;
 
     public CreateLoanDtoRequest() { }

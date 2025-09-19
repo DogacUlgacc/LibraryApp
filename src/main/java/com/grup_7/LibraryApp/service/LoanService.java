@@ -17,11 +17,13 @@ import com.grup_7.LibraryApp.repository.MemberRepository;
 import com.grup_7.LibraryApp.repository.StaffRepository;
 import com.grup_7.LibraryApp.rules.MemberBusinessRules;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@Validated
 public class LoanService {
 
     private final LoanRepository loanRepository;

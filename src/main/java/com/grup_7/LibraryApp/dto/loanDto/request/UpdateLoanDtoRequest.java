@@ -1,10 +1,17 @@
 package com.grup_7.LibraryApp.dto.loanDto.request;
 
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.PastOrPresent;
+
 import java.time.LocalDate;
 
 public class UpdateLoanDtoRequest {
+
+    @Future
     private LocalDate dueDate;
+    @PastOrPresent
     private LocalDate returnDate;
+
     private int staffId;
 
     public UpdateLoanDtoRequest() { }
