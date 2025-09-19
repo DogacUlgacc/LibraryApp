@@ -1,5 +1,6 @@
 package com.grup_7.LibraryApp.service;
 
+import com.grup_7.LibraryApp.core.exception.type.BusinessException;
 import com.grup_7.LibraryApp.dto.bookDto.request.BookStatusUpdateRequestDto;
 import com.grup_7.LibraryApp.dto.bookDto.request.CreateBookRequest;
 import com.grup_7.LibraryApp.dto.bookDto.request.BookUpdateDtoRequest;
@@ -8,6 +9,7 @@ import com.grup_7.LibraryApp.entity.Author;
 import com.grup_7.LibraryApp.entity.Book;
 import com.grup_7.LibraryApp.entity.Category;
 import com.grup_7.LibraryApp.entity.Publisher;
+import com.grup_7.LibraryApp.mapper.BookMapper;
 import com.grup_7.LibraryApp.repository.AuthorRepository;
 import com.grup_7.LibraryApp.repository.BookRepository;
 import com.grup_7.LibraryApp.repository.CategoryRepository;
@@ -15,6 +17,7 @@ import com.grup_7.LibraryApp.repository.PublisherRepository;
 import com.grup_7.LibraryApp.rules.BookBusinessRules;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,20 +28,20 @@ public class BookService {
     private final CategoryRepository categoryRepository;
     private final PublisherRepository publisherRepository;
     private final BookBusinessRules bookBusinessRules;
+    private final BookMapper bookMapper;
 
-    public BookService(BookRepository bookRepository,
-                       AuthorRepository authorRepository,
-                       CategoryRepository categoryRepository,
-                       PublisherRepository publisherRepository, BookBusinessRules bookBusinessRules) {
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, PublisherRepository publisherRepository, BookBusinessRules bookBusinessRules, BookMapper bookMapper) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.categoryRepository = categoryRepository;
         this.publisherRepository = publisherRepository;
         this.bookBusinessRules = bookBusinessRules;
+        this.bookMapper = bookMapper;
     }
 
     public List<GetAllBooksDtoResponse> getAllBooks() {
-        return bookRepository.findAll()
+        return bookMapper.toGetAllBooksDtoResponse(bookRepository.findAll());
+       /* return bookRepository.findAll()
                 .stream()
                 .map(book -> new GetAllBooksDtoResponse(
                         book.getTitle(),
@@ -49,68 +52,49 @@ public class BookService {
                         book.getCategory() != null ? new BookCategoryDto(book.getCategory().getName()) : null,
                         book.getPublisher() != null ? new BookPublisherDto(book.getPublisher().getName(), book.getPublisher().getAddress()) : null
                 ))
-                .toList();
+                .toList();*/
     }
 
     public CreatedBookResponse addBook(CreateBookRequest request) {
         bookBusinessRules.isbnMustUnique(request.getIsbn());
         bookBusinessRules.totalCopiesMustBeNonNegative(request.getTotalCopies());
 
-
         Book book = new Book();
 
         book.setTitle(request.getTitle());
+        book.setIsbn(request.getIsbn()); // <- burayı ekle
+
         if (request.getPublishYear() != null) book.setPublishYear(request.getPublishYear());
         if (request.getTotalCopies() != null) book.setTotalCopies(request.getTotalCopies());
         book.setAvailableCopies(request.getTotalCopies() != null ? request.getTotalCopies() : 0);
 
         if (request.getAuthorId() == null) throw new RuntimeException("Yazar zorunlu.");
-        Author author = authorRepository.findById((request.getAuthorId()))
-                .orElseThrow(() -> new RuntimeException("Yazar bulunamadı: " + request.getAuthorId()));
+        Author author = authorRepository.findById((request.getAuthorId())).orElseThrow(() -> new RuntimeException("Yazar bulunamadı: " + request.getAuthorId()));
         book.setAuthors(List.of(author));
 
         if (request.getCategoryId() == null) throw new RuntimeException("Kategori zorunlu.");
-        Category category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Kategori bulunamadı: " + request.getCategoryId()));
+        Category category = categoryRepository.findById(request.getCategoryId()).orElseThrow(() -> new RuntimeException("Kategori bulunamadı: " + request.getCategoryId()));
         book.setCategory(category);
 
         if (request.getPublisherId() == null) throw new RuntimeException("Yayınevi zorunlu.");
-        Publisher publisher = publisherRepository.findById(request.getPublisherId())
-                .orElseThrow(() -> new RuntimeException("Yayınevi bulunamadı: " + request.getPublisherId()));
+        Publisher publisher = publisherRepository.findById(request.getPublisherId()).orElseThrow(() -> new RuntimeException("Yayınevi bulunamadı: " + request.getPublisherId()));
         book.setPublisher(publisher);
 
         Book saved = bookRepository.save(book);
 
-        return new CreatedBookResponse(
-                saved.getTitle(),
-                saved.getAuthors().stream()
-                        .map(a -> new BookAuthorDto(a.getName(), a.getSurname()))
-                        .toList(),
-                saved.getAvailableCopies(),
-                new BookCategoryDto(saved.getCategory().getName()),
-                new BookPublisherDto(saved.getPublisher().getName(), saved.getPublisher().getAddress())
-        );
+       return bookMapper.toCreatedBookResponse(saved);
     }
 
     public GetBookByIdDtoResponse getBookByIdDtoResponse(int id) {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Kitap bulunamadı: " + id));
-
-        return new GetBookByIdDtoResponse(
-                book.getTitle(),
-                book.getAuthors().stream()
-                        .map(a -> new BookAuthorDto(a.getName(), a.getSurname()))
-                        .toList(),
-                book.getAvailableCopies(),
-                book.getCategory() != null ? new BookCategoryDto(book.getCategory().getName()) : null,
-                book.getPublisher() != null ? new BookPublisherDto(book.getPublisher().getName(), book.getPublisher().getAddress()) : null
-        );
+        Book book = bookBusinessRules.bookShouldExistWithGivenId(id);
+        return bookMapper.toGetBookByIdDtoResponse(book);
     }
 
+
     public BookUpdateDtoResponse updateBook(int id, BookUpdateDtoRequest req) {
-        bookBusinessRules.availableCopiesMustBeValid(req.getAvailableCopies(),req.getTotalCopies());
-        bookBusinessRules.totalCopiesMustBeNonNegative(req.getTotalCopies());
         Book book = bookBusinessRules.bookShouldExistWithGivenId(id);
+        bookBusinessRules.availableCopiesMustBeValid(req.getAvailableCopies(), req.getTotalCopies());
+        bookBusinessRules.totalCopiesMustBeNonNegative(req.getTotalCopies());
 
         if (req.getTitle() != null && !req.getTitle().isBlank()) book.setTitle(req.getTitle());
         if (req.getPublishYear() != null) book.setPublishYear(req.getPublishYear());
@@ -118,34 +102,25 @@ public class BookService {
         if (req.getAvailableCopies() != null) book.setAvailableCopies(req.getAvailableCopies());
 
         if (req.getAuthorId() != null) {
-            Author author = authorRepository.findById((req.getAuthorId()))
-                    .orElseThrow(() -> new RuntimeException("Yazar bulunamadı: " + req.getAuthorId()));
-            book.setAuthors(List.of(author));
+            Author author = authorRepository.findById((req.getAuthorId())).orElseThrow(() -> new BusinessException("Yazar bulunamadı: " + req.getAuthorId()));
+            book.setAuthors(new ArrayList<>(List.of(author)));
+
         }
 
         if (req.getCategoryId() != null) {
-            Category category = categoryRepository.findById(req.getCategoryId())
-                    .orElseThrow(() -> new RuntimeException("Kategori bulunamadı: " + req.getCategoryId()));
+            Category category = categoryRepository.findById(req.getCategoryId()).orElseThrow(() -> new BusinessException("Kategori bulunamadı: " + req.getCategoryId()));
             book.setCategory(category);
         }
 
         if (req.getPublisherId() != null) {
-            Publisher publisher = publisherRepository.findById(req.getPublisherId())
-                    .orElseThrow(() -> new RuntimeException("Yayınevi bulunamadı: " + req.getPublisherId()));
+            Publisher publisher = publisherRepository.findById(req.getPublisherId()).orElseThrow(() -> new BusinessException("Yayınevi bulunamadı: " + req.getPublisherId()));
             book.setPublisher(publisher);
         }
 
         Book saved = bookRepository.save(book);
 
-        return new BookUpdateDtoResponse(
-                saved.getTitle(),
-                saved.getAuthors().stream()
-                        .map(a -> new BookAuthorDto(a.getName(), a.getSurname()))
-                        .toList(),
-                saved.getAvailableCopies(),
-                new BookCategoryDto(saved.getCategory().getName()),
-                new BookPublisherDto(saved.getPublisher().getName(), saved.getPublisher().getAddress())
-        );
+        return bookMapper.toBookUpdateDtoResponse(saved);
+//        return new BookUpdateDtoResponse(saved.getTitle(), saved.getAuthors().stream().map(a -> new BookAuthorDto(a.getName(), a.getSurname())).toList(), saved.getAvailableCopies(), new BookCategoryDto(saved.getCategory().getName()), new BookPublisherDto(saved.getPublisher().getName(), saved.getPublisher().getAddress()));
     }
 
     public void deleteBook(int id) {
@@ -156,18 +131,10 @@ public class BookService {
         Book bookForUpdateStatus = bookBusinessRules.bookShouldExistWithGivenId(id);
         bookForUpdateStatus.setStatus(statusUpdateRequestDto.getStatus());
         Book updatedBook = bookRepository.save(bookForUpdateStatus);
-        BookStatusUpdatedResponse response = new BookStatusUpdatedResponse();
-        response.setTitle(updatedBook.getTitle());
-        List<BookAuthorDto> authorDtos = updatedBook.getAuthors().stream()
-                .map(author -> new BookAuthorDto(author.getName(), author.getSurname()))
-                .toList();
-        response.setAuthors(authorDtos);
-        response.setCategory(new BookCategoryDto(updatedBook.getCategory().getName()));
-        Publisher publisher = updatedBook.getPublisher();
-        response.setPublisher(new BookPublisherDto(publisher.getName(), publisher.getAddress()));
-        response.setStatus(updatedBook.getStatus());
 
-        return response;
+        return bookMapper.toBookStatusUpdatedResponse(updatedBook);
+
+
 
     }
 }
