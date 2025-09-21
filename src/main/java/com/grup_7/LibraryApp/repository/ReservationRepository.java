@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
 
 
-    Optional<Object> findTopByBookAndStatusOrderByReservationDateAsc(Book book, ReservationStatus reservationStatus);
+    Optional<Reservation> findTopByBookAndStatusOrderByReservationDateAsc(Book book, ReservationStatus reservationStatus);
 
     List<Reservation> findByMember(Member member);
 
