@@ -142,4 +142,6 @@ public class Member {
     public void setLoans(List<Loan> loans) {
         this.loans = loans;
     }
+
+
 }
