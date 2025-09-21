@@ -1,5 +1,7 @@
 package com.grup_7.LibraryApp.dto.loanDto.response;
 
+import com.grup_7.LibraryApp.enums.loan.LoanStatus;
+
 import java.time.LocalDate;
 
 public class CreatedLoanResponse {
@@ -10,12 +12,12 @@ public class CreatedLoanResponse {
     private LocalDate dueDate;
     private LocalDate returnDate;
     private int staffId;
+    private LoanStatus status;
 
-    public CreatedLoanResponse() { }
+    public CreatedLoanResponse() {
+    }
 
-    public CreatedLoanResponse(int id, int memberId, int bookId,
-                               LocalDate loanDate, LocalDate dueDate,
-                               LocalDate returnDate, int staffId) {
+    public CreatedLoanResponse(int id, int memberId, int bookId, LocalDate loanDate, LocalDate dueDate, LocalDate returnDate, int staffId, LoanStatus status) {
         this.id = id;
         this.memberId = memberId;
         this.bookId = bookId;
@@ -23,26 +25,70 @@ public class CreatedLoanResponse {
         this.dueDate = dueDate;
         this.returnDate = returnDate;
         this.staffId = staffId;
+        this.status = status;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public int getMemberId() { return memberId; }
-    public void setMemberId(int memberId) { this.memberId = memberId; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public int getBookId() { return bookId; }
-    public void setBookId(int bookId) { this.bookId = bookId; }
+    public int getMemberId() {
+        return memberId;
+    }
 
-    public LocalDate getLoanDate() { return loanDate; }
-    public void setLoanDate(LocalDate loanDate) { this.loanDate = loanDate; }
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
+    }
 
-    public LocalDate getDueDate() { return dueDate; }
-    public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
+    public int getBookId() {
+        return bookId;
+    }
 
-    public LocalDate getReturnDate() { return returnDate; }
-    public void setReturnDate(LocalDate returnDate) { this.returnDate = returnDate; }
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
 
-    public int getStaffId() { return staffId; }
-    public void setStaffId(int staffId) { this.staffId = staffId; }
+    public LocalDate getLoanDate() {
+        return loanDate;
+    }
+
+    public void setLoanDate(LocalDate loanDate) {
+        this.loanDate = loanDate;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    public int getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(int staffId) {
+        this.staffId = staffId;
+    }
+
+    public LoanStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LoanStatus status) {
+        this.status = status;
+    }
 }

@@ -43,11 +43,11 @@ public class Book {
     @JoinColumn(name = "publisher_id", nullable = false)
     private Publisher publisher;
 
-    @Column(name = "isbn", nullable = false, unique = true, length = 20)
+    @Column(name = "isbn", nullable = true, unique = true, length = 20)
     private String isbn;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = true)
     private BookStatus status = BookStatus.ACTIVE;
 
     public Book() {

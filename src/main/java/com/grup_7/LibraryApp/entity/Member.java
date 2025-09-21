@@ -36,7 +36,7 @@ public class Member {
     private String address;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "membership_level", nullable = false, length = 20)
+    @Column(name = "membership_level", nullable = true, length = 20)
     private MembershipLevel membershipLevel;
 
     @Column(name = "membership_date")

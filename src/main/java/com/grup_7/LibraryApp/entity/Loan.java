@@ -1,5 +1,6 @@
 package com.grup_7.LibraryApp.entity;
 
+import com.grup_7.LibraryApp.enums.loan.LoanStatus;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
@@ -10,7 +11,7 @@ public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "loan_id")
-    private Long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "member_id", nullable = false)
@@ -33,10 +34,14 @@ public class Loan {
     @JoinColumn(name = "staff_id")
     private Staff staff;
 
-    public Loan() {}
+    @Enumerated(EnumType.STRING)
+    @Column(name = "loan_status", nullable = true, length = 20)
+    private LoanStatus status;
 
-    public Loan(Long id, Member member, Book book, LocalDate loanDate,
-                LocalDate dueDate, LocalDate returnDate, Staff staff) {
+    public Loan() {
+    }
+
+    public Loan(int id, Member member, Book book, LocalDate loanDate, LocalDate dueDate, LocalDate returnDate, Staff staff, LoanStatus status) {
         this.id = id;
         this.member = member;
         this.book = book;
@@ -44,26 +49,70 @@ public class Loan {
         this.dueDate = dueDate;
         this.returnDate = returnDate;
         this.staff = staff;
+        this.status = status;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public Member getMember() { return member; }
-    public void setMember(Member member) { this.member = member; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public Book getBook() { return book; }
-    public void setBook(Book book) { this.book = book; }
+    public Member getMember() {
+        return member;
+    }
 
-    public LocalDate getLoanDate() { return loanDate; }
-    public void setLoanDate(LocalDate loanDate) { this.loanDate = loanDate; }
+    public void setMember(Member member) {
+        this.member = member;
+    }
 
-    public LocalDate getDueDate() { return dueDate; }
-    public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
+    public Book getBook() {
+        return book;
+    }
 
-    public LocalDate getReturnDate() { return returnDate; }
-    public void setReturnDate(LocalDate returnDate) { this.returnDate = returnDate; }
+    public void setBook(Book book) {
+        this.book = book;
+    }
 
-    public Staff getStaff() { return staff; }
-    public void setStaff(Staff staff) { this.staff = staff; }
+    public LocalDate getLoanDate() {
+        return loanDate;
+    }
+
+    public void setLoanDate(LocalDate loanDate) {
+        this.loanDate = loanDate;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
+    }
+
+    public LoanStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LoanStatus status) {
+        this.status = status;
+    }
 }

@@ -4,7 +4,7 @@ import com.grup_7.LibraryApp.enums.loan.LoanStatus;
 
 import java.time.LocalDate;
 
-public class GetAllLoansDtoResponse {
+public class ReturnedLoanResponse {
     private int id;
     private int memberId;
     private int bookId;
@@ -14,10 +14,10 @@ public class GetAllLoansDtoResponse {
     private int staffId;
     private LoanStatus status;
 
-    public GetAllLoansDtoResponse() {
+    public ReturnedLoanResponse() {
     }
 
-    public GetAllLoansDtoResponse(int id, int memberId, int bookId, LocalDate loanDate, LocalDate dueDate, LocalDate returnDate, int staffId, LoanStatus status) {
+    public ReturnedLoanResponse(int id, int memberId, int bookId, LocalDate loanDate, LocalDate dueDate, LocalDate returnDate, int staffId, LoanStatus status) {
         this.id = id;
         this.memberId = memberId;
         this.bookId = bookId;

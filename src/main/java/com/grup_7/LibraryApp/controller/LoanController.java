@@ -1,12 +1,10 @@
 package com.grup_7.LibraryApp.controller;
 
-import com.grup_7.LibraryApp.dto.loanDto.request.CreateLoanDtoRequest;
-import com.grup_7.LibraryApp.dto.loanDto.request.UpdateLoanDtoRequest;
-import com.grup_7.LibraryApp.dto.loanDto.response.CreatedLoanResponse;
-import com.grup_7.LibraryApp.dto.loanDto.response.GetAllLoansDtoResponse;
-import com.grup_7.LibraryApp.dto.loanDto.response.GetLoanByIdDtoResponse;
-import com.grup_7.LibraryApp.dto.loanDto.response.UpdatedLoanResponse;
+import com.grup_7.LibraryApp.dto.loanDto.request.LoanCreateRequest;
+import com.grup_7.LibraryApp.dto.loanDto.request.LoanReturnRequest;
+import com.grup_7.LibraryApp.dto.loanDto.response.*;
 import com.grup_7.LibraryApp.service.LoanService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,29 +22,24 @@ public class LoanController {
 
     @GetMapping("/all")
     public List<GetAllLoansDtoResponse> getAllLoans(){
-        return loanService.getAllLoans();
+        return loanService.getList();
     }
 
-    @GetMapping("{id}")
-    public GetLoanByIdDtoResponse getByIdLoan(@PathVariable int id){
-        return loanService.getLoanById(id);
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedLoanResponse createLoan(@RequestBody CreateLoanDtoRequest request) {
-        return loanService.createLoan(request);
+    public CreatedLoanResponse createLoan(@Valid @RequestBody LoanCreateRequest request) {
+        return loanService.add(request);
     }
 
     @PutMapping("{id}")
-    public UpdatedLoanResponse updateLoan(@PathVariable int id,
-                                      @RequestBody UpdateLoanDtoRequest request) {
-        return loanService.updateLoan(id, request);
+    public ReturnedLoanResponse updateLoan(@Valid @RequestBody LoanReturnRequest request) {
+        return loanService.returnLoan(request);
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable int id) {
-        loanService.deleteLoan(id);
+    public DeletedLoanResponse delete(@Valid @PathVariable int id) {
+         return loanService.delete(id);
     }
 
 
