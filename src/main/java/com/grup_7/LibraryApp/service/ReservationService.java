@@ -1,6 +1,7 @@
 package com.grup_7.LibraryApp.service;
 
 import com.grup_7.LibraryApp.dto.reservationDto.request.CreateReservationRequest;
+import com.grup_7.LibraryApp.dto.reservationDto.response.ReservationListResponse;
 import com.grup_7.LibraryApp.dto.reservationDto.response.ReservationResponse;
 import com.grup_7.LibraryApp.entity.Book;
 import com.grup_7.LibraryApp.entity.Member;
@@ -58,7 +59,7 @@ public class ReservationService {
         return reservationMapper.toReservationResponse(reservation);
     }
 
-    public List<ReservationResponse> getReservationsByMember(int memberId) {
+    public List<ReservationListResponse> getReservationsByMember(int memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("Üye bulunamadı"));
         List<Reservation> reservations = reservationRepository.findByMember(member);

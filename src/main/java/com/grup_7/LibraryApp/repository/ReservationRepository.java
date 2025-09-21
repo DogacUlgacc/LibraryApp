@@ -22,6 +22,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     List<Reservation> findByMember(Member member);
 
-
     Optional<Reservation> findByMemberAndBookAndStatus(Member member, Book book, ReservationStatus reservationStatus);
 }
