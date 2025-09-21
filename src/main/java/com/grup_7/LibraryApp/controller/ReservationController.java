@@ -1,6 +1,7 @@
 package com.grup_7.LibraryApp.controller;
 
 import com.grup_7.LibraryApp.dto.reservationDto.request.CreateReservationRequest;
+import com.grup_7.LibraryApp.dto.reservationDto.response.ReservationListResponse;
 import com.grup_7.LibraryApp.dto.reservationDto.response.ReservationResponse;
 import com.grup_7.LibraryApp.service.ReservationService;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +38,8 @@ public class ReservationController {
     }
 
     @GetMapping("/members/{memberId}")
-    public ResponseEntity<List<ReservationResponse>> getReservationsByMember(@PathVariable int memberId) {
-        List<ReservationResponse> list = reservationService.getReservationsByMember(memberId);
+    public ResponseEntity<List<ReservationListResponse>>getReservationsByMember(@PathVariable int memberId) {
+        List<ReservationListResponse> list = reservationService.getReservationsByMember(memberId);
         return ResponseEntity.ok(list);
     }
 }
