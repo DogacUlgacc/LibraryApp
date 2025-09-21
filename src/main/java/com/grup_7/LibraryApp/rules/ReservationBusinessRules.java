@@ -3,10 +3,10 @@ package com.grup_7.LibraryApp.rules;
 import com.grup_7.LibraryApp.entity.Book;
 import com.grup_7.LibraryApp.entity.Member;
 import com.grup_7.LibraryApp.entity.Reservation;
-import com.grup_7.LibraryApp.enums.member.MemberStatus;
+import com.grup_7.LibraryApp.enums.member.MembershipLevel;
 import com.grup_7.LibraryApp.enums.reservation.ReservationStatus;
 import com.grup_7.LibraryApp.repository.ReservationRepository;
-import com.grup_7.LibraryApp.exception.BusinessException;
+import com.grup_7.LibraryApp.core.exception.type.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +31,7 @@ public class ReservationBusinessRules {
     }
 
     private void checkMemberEligibility(Member member) {
-        if (member.getStatus() == MemberStatus.BANNED) {
+        if (member.getMembershipLevel() == MembershipLevel.BANNED) {
             throw new BusinessException("BANNED üyeler rezervasyon yapamaz.");
         }
     }
