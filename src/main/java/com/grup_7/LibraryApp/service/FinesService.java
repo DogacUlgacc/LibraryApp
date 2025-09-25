@@ -29,11 +29,11 @@ public class FinesService {
         this.finesRepository = finesRepository;
         this.finesBusinessRules = finesBusinessRules;
         this.finesMapper = finesMapper;
-    }
+    };
 
-   //bir üyenin cezasını getirme;
+    //bir üyenin cezasını getirme;
     public List<FinesListResponse> getFinesByMember(int memberId){
-        List<Fines> fines = finesRepository.findByReservationMemberId(memberId);
+        List<Fines> fines = finesRepository.findByReservationMemberMemberId(memberId);
         return fines.stream()
                 .map(finesMapper::toFinesListResponse)
                 .toList();

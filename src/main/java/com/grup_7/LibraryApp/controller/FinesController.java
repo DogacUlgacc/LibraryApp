@@ -18,10 +18,13 @@ import java.util.List;
 public class FinesController {
 
     private final FinesService finesService;
-    public FinesController(FinesService finesService){
+
+
+    public FinesController(FinesService finesService) {
         this.finesService = finesService;
     }
-//cezalı üyeleri getirme
+
+    //cezalı üyeleri getirme
     @GetMapping("/members/{memberId}")
     public List<FinesListResponse> getFinesByMember(@PathVariable int memberId) {
         return finesService.getFinesByMember(memberId);

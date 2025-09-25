@@ -36,7 +36,7 @@ public class FinesBusinessRules {
     // Üyenin ödenmemiş cezası var mı
 
     public void checkMemberHasNoUnpaidFines(int memberId) {
-        boolean hasUnpaid = finesRepository.existsByReservationMemberIdAndIsPaidFalse(memberId);
+        boolean hasUnpaid = finesRepository.existsByReservationMemberMemberIdAndIsPaidFalse(memberId);
         if (hasUnpaid) {
             throw new RuntimeException("Üyenin ödenmemiş cezası var, yeni işlem yapılamaz: " + memberId);
         }
@@ -65,6 +65,6 @@ public class FinesBusinessRules {
 
     // Üye yeni kitap alabilir mi veya rezervasyon yapabilir mi
     public boolean canMemberBorrowOrReserve(int memberId) {
-        return !finesRepository.existsByReservationMemberIdAndIsPaidFalse(memberId);
+        return !finesRepository.existsByReservationMemberMemberIdAndIsPaidFalse(memberId);
     }
 }

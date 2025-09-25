@@ -10,10 +10,9 @@ import java.util.List;
 @Repository
 public interface FinesRepository extends JpaRepository<Fines,Integer> {
 
-    List<Fines> findByReservationMemberId(int memberId);
+    List<Fines> findByReservationMemberMemberId(int memberId);
 
-
-    boolean existsByReservationMemberIdAndIsPaidFalse(int memberId);
+    boolean existsByReservationMemberMemberIdAndIsPaidFalse(int memberId);
 
 
 

@@ -82,7 +82,7 @@ public class BookService {
 
         Book saved = bookRepository.save(book);
 
-       return bookMapper.toCreatedBookResponse(saved);
+        return bookMapper.toCreatedBookResponse(saved);
     }
 
     public GetBookByIdDtoResponse getBookByIdDtoResponse(int id) {
@@ -133,8 +133,6 @@ public class BookService {
         Book updatedBook = bookRepository.save(bookForUpdateStatus);
 
         return bookMapper.toBookStatusUpdatedResponse(updatedBook);
-
-
-
+        
     }
 }

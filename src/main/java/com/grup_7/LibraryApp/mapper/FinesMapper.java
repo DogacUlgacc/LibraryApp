@@ -21,8 +21,9 @@ public interface FinesMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "isPaid", constant = "false")
-    @Mapping(target = "reservation", source = "reservation")
+    @Mapping(target = "reservation.id", source = "reservationId")
     Fines toFinesEntity(CreateFinesRequest request);
+
 
     @Mapping(target = "reservationId", source = "reservation.id")
     @Mapping(target = "memberName", source = "reservation.member.name")
