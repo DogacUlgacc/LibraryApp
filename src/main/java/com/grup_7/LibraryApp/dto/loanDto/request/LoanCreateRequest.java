@@ -8,9 +8,23 @@ import java.time.LocalDate;
 public class LoanCreateRequest {
     @NotNull
     private Long memberId;
-    @NotNull private Long bookId;
+
+    @NotNull
+    private Long bookId;
+
     @PastOrPresent
     private LocalDate loanDate;
+
+    @NotNull
+    private Long staffId;
+
+    public @NotNull Long getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(@NotNull Long staffId) {
+        this.staffId = staffId;
+    }
 
     public Long getMemberId() {
         return memberId;

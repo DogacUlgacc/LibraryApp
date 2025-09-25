@@ -4,12 +4,6 @@ public class UpdateMemberRequestDto {
     private String phone;
     private String address;
 
-    public UpdateMemberRequestDto() {}
-    public UpdateMemberRequestDto(String phone, String address) {
-        this.phone = phone;
-        this.address = address;
-
-    }
 
     public String getPhone() {
         return phone;

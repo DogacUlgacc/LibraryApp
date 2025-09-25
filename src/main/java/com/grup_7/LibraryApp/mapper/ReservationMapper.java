@@ -24,7 +24,16 @@ public interface ReservationMapper {
     @Mapping(target = "book", ignore = true)
     Reservation toReservationEntity(CreateReservationRequest request);
 
+    @Mapping(source = "member.memberId", target = "memberId")
+    @Mapping(source = "member.name", target = "memberName")
+    @Mapping(source = "book.id", target = "bookId")
+    @Mapping(source = "book.title", target = "bookTitle")
+    @Mapping(source = "reservationDate", target = "reservationDate")
+    @Mapping(source = "expireAt", target = "expireAt")
+    @Mapping(source = "status", target = "status")
     ReservationResponse toReservationResponse(Reservation reservation);
+
+    List<ReservationResponse> toReservationResponseList(List<Reservation> reservations);
 
     CreatedReservationResponse toCreatedReservationResponse(Reservation reservation);
 

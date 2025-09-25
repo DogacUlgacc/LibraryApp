@@ -6,7 +6,7 @@ import com.grup_7.LibraryApp.dto.finesDto.response.CreatedFinesResponse;
 import com.grup_7.LibraryApp.dto.finesDto.response.FinesListResponse;
 import com.grup_7.LibraryApp.dto.finesDto.response.UpdateFinesResponse;
 import com.grup_7.LibraryApp.dto.finesDto.response.FinesResponse;
-import com.grup_7.LibraryApp.entity.Fines;
+import com.grup_7.LibraryApp.entity.Fine;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -15,41 +15,39 @@ import org.mapstruct.MappingTarget;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface FinesMapper {
-
-
+public interface FineMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "isPaid", constant = "false")
     @Mapping(target = "reservation.id", source = "reservationId")
-    Fines toFinesEntity(CreateFinesRequest request);
+    Fine toFinesEntity(CreateFinesRequest request);
 
 
     @Mapping(target = "reservationId", source = "reservation.id")
     @Mapping(target = "memberName", source = "reservation.member.name")
     @Mapping(target = "bookTitle", source = "reservation.book.title")
-    CreatedFinesResponse toCreatedFinesResponse(Fines fines);
+    CreatedFinesResponse toCreatedFinesResponse(Fine fine);
 
     @Mapping(target = "reservationId", source = "reservation.id")
     @Mapping(target = "memberName", source = "reservation.member.name")
     @Mapping(target = "bookTitle", source = "reservation.book.title")
-    FinesResponse toFinesResponse(Fines fines);
+    FinesResponse toFinesResponse(Fine fine);
 
     @Mapping(target = "reservationId", source = "reservation.id")
     @Mapping(target = "memberName", source = "reservation.member.name")
     @Mapping(target = "bookTitle", source = "reservation.book.title")
-    FinesListResponse toFinesListResponse(Fines fines);
+    FinesListResponse toFinesListResponse(Fine fine);
 
-    List<FinesListResponse> toFinesListResponseList(List<Fines> finesList);
+    List<FinesListResponse> toFinesListResponseList(List<Fine> fineList);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "reservation", ignore = true)
-    void updateFinesFromRequest(UpdateFinesRequest request, @MappingTarget Fines fines);
+    void updateFinesFromRequest(UpdateFinesRequest request, @MappingTarget Fine fine);
 
     @Mapping(target = "reservationId", source = "reservation.id")
     @Mapping(target = "memberName", source = "reservation.member.name")
     @Mapping(target = "bookTitle", source = "reservation.book.title")
-    UpdateFinesResponse toUpdateFinesResponse(Fines fines);
+    UpdateFinesResponse toUpdateFinesResponse(Fine fine);
 
 
 }

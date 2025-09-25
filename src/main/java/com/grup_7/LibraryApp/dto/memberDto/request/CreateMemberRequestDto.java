@@ -11,18 +11,6 @@ public class CreateMemberRequestDto {
     private String address;
     private MembershipLevel membershipLevel;
 
-    public CreateMemberRequestDto() {
-    }
-
-    public CreateMemberRequestDto(MembershipLevel membershipLevel, String address, String phone, String email, String surname, String name) {
-        this.membershipLevel = membershipLevel;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.surname = surname;
-        this.name = name;
-    }
-
     public String getName() {
         return name;
     }

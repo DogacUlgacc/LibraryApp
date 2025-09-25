@@ -1,7 +1,7 @@
 package com.grup_7.LibraryApp.rules;
 
 import com.grup_7.LibraryApp.enums.fines.FineType;
-import com.grup_7.LibraryApp.repository.FinesRepository;
+import com.grup_7.LibraryApp.repository.FineRepository;
 import com.grup_7.LibraryApp.repository.ReservationRepository;
 import org.springframework.stereotype.Component;
 
@@ -9,16 +9,16 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 @Component
-public class FinesBusinessRules {
+public class FineBusinessRules {
 
     private static final double DAILY_LATE_FEE_RATE = 5.0; // Gecikme cezası günlük oranı
     private static final double LOST_DAMAGE_PROCESSING_FEE = 15.0; // Kayıp/hasar sabit ceza
 
-    private final FinesRepository finesRepository;
+    private final FineRepository fineRepository;
     private final ReservationRepository reservationRepository;
 
-    public FinesBusinessRules(FinesRepository finesRepository, ReservationRepository reservationRepository) {
-        this.finesRepository = finesRepository;
+    public FineBusinessRules(FineRepository fineRepository, ReservationRepository reservationRepository) {
+        this.fineRepository = fineRepository;
         this.reservationRepository = reservationRepository;
     }
 
@@ -36,7 +36,7 @@ public class FinesBusinessRules {
     // Üyenin ödenmemiş cezası var mı
 
     public void checkMemberHasNoUnpaidFines(int memberId) {
-        boolean hasUnpaid = finesRepository.existsByReservationMemberMemberIdAndIsPaidFalse(memberId);
+        boolean hasUnpaid = fineRepository.existsByReservationMemberMemberIdAndIsPaidFalse(memberId);
         if (hasUnpaid) {
             throw new RuntimeException("Üyenin ödenmemiş cezası var, yeni işlem yapılamaz: " + memberId);
         }
@@ -65,6 +65,6 @@ public class FinesBusinessRules {
 
     // Üye yeni kitap alabilir mi veya rezervasyon yapabilir mi
     public boolean canMemberBorrowOrReserve(int memberId) {
-        return !finesRepository.existsByReservationMemberMemberIdAndIsPaidFalse(memberId);
+        return !fineRepository.existsByReservationMemberMemberIdAndIsPaidFalse(memberId);
     }
 }

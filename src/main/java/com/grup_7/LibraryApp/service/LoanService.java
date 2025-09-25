@@ -26,22 +26,15 @@ import java.util.List;
 public class LoanService {
 
     private final LoanRepository loanRepository;
-    private final MemberRepository memberRepository;
-    private final BookRepository bookRepository;
-    private final LoanBusinessRules rules;
+    private final LoanBusinessRules LoanBusinessrules;
     private final LoanMapper loanMapper;
 
-    public LoanService(LoanRepository loanRepository,
-                       MemberRepository memberRepository,
-                       BookRepository bookRepository,
-                       LoanBusinessRules rules,
-                       LoanMapper loanMapper) {
+    public LoanService(LoanRepository loanRepository, LoanBusinessRules loanBusinessrules, LoanMapper loanMapper) {
         this.loanRepository = loanRepository;
-        this.memberRepository = memberRepository;
-        this.bookRepository = bookRepository;
-        this.rules = rules;
+        LoanBusinessrules = loanBusinessrules;
         this.loanMapper = loanMapper;
     }
+
 
     // === LIST ===
     public List<GetAllLoansDtoResponse> getList() {
@@ -53,9 +46,9 @@ public class LoanService {
     @Transactional
     public CreatedLoanResponse add(@Valid LoanCreateRequest request) {
         // 1) Kurallar (BANNED/limit, kitap aktif & stok>0, aynı kitap için açık loan yok)
-        Member member = rules.memberMustBeBorrowEligibleWithoutFineCheck(request.getMemberId().intValue());
-        Book book = rules.bookMustBeLoanable(request.getBookId().intValue());
-        rules.mustNotHaveOpenLoanForSameBook(member.getMemberId(), book.getId());
+        Member member = LoanBusinessrules.memberMustBeBorrowEligibleWithoutFineCheck(request.getMemberId().intValue());
+        Book book = LoanBusinessrules.bookMustBeLoanable(request.getBookId().intValue());
+        LoanBusinessrules.mustNotHaveOpenLoanForSameBook(member.getMemberId(), book.getId());
 
         // 2) Loan nesnesi
         Loan loan = loanMapper.toLoan(request);
@@ -64,11 +57,11 @@ public class LoanService {
         loan.setMember(member);
         loan.setBook(book);
         loan.setStatus(LoanStatus.OPEN);
-        loan.setDueDate(rules.calcDueDate(loanDate, member.getMembershipLevel()));
+        loan.setDueDate(LoanBusinessrules.calcDueDate(loanDate, member.getMembershipLevel()));
 
         // 3) Kaydet + stok düş
         loan = loanRepository.save(loan);
-        rules.decreaseStockOne(book);
+        LoanBusinessrules.decreaseStockOne(book);
 
         return loanMapper.toCreatedLoanResponse(loan);
     }
@@ -76,22 +69,22 @@ public class LoanService {
     // === RETURN ===
     @Transactional
     public ReturnedLoanResponse returnLoan(@Valid LoanReturnRequest request) {
-        Loan loan = rules.loanMustBeReturnable(request.getLoanId().intValue());
+        Loan loan = LoanBusinessrules.loanMustBeReturnable(request.getLoanId().intValue());
         LocalDate returnDate = (request.getReturnDate() != null) ? request.getReturnDate() : LocalDate.now();
         loan.setReturnDate(returnDate);
 
         // Fine devre dışı: gecikme cezası oluşturma yerine sadece LATE işaretleyip kapatacağız (TODO: Fine hazır olunca aç)
-        rules.markLateIfNeeded(loan, returnDate); // sadece status=LATE işaretleyebilir
+        LoanBusinessrules.markLateIfNeeded(loan, returnDate); // sadece status=LATE işaretleyebilir
         loan.setStatus(LoanStatus.CLOSED);
         loan = loanRepository.save(loan);
 
-        rules.increaseStockOne(loan.getBook());
+        LoanBusinessrules.increaseStockOne(loan.getBook());
         return loanMapper.toReturnedLoanResponse(loan);
     }
 
     @Transactional
     public DeletedLoanResponse delete(int id) {
-        Loan loan = rules.loanMustExist(id);
+        Loan loan = LoanBusinessrules.loanMustExist(id);
         loanRepository.delete(loan);
         return new DeletedLoanResponse(id);
     }

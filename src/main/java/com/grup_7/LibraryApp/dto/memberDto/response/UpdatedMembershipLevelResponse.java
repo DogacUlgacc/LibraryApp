@@ -2,21 +2,13 @@ package com.grup_7.LibraryApp.dto.memberDto.response;
 
 import com.grup_7.LibraryApp.enums.member.MembershipLevel;
 
-public class MemberResponseDto {
+public class UpdatedMembershipLevelResponse {
     private String name;
     private String surname;
     private String email;
     private String phone;
     private String address;
     private MembershipLevel membershipLevel;
-
-    public MembershipLevel getMembershipLevel() {
-        return membershipLevel;
-    }
-
-    public void setMembershipLevel(MembershipLevel membershipLevel) {
-        this.membershipLevel = membershipLevel;
-    }
 
     public String getName() {
         return name;
@@ -58,6 +50,11 @@ public class MemberResponseDto {
         this.address = address;
     }
 
+    public MembershipLevel getMembershipLevel() {
+        return membershipLevel;
+    }
 
-
+    public void setMembershipLevel(MembershipLevel membershipLevel) {
+        this.membershipLevel = membershipLevel;
+    }
 }

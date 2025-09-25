@@ -7,6 +7,8 @@ import com.grup_7.LibraryApp.enums.member.MembershipLevel;
 import com.grup_7.LibraryApp.repository.MemberRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.EnumSet;
+
 
 @Component
 public class MemberBusinessRules {
@@ -16,6 +18,7 @@ public class MemberBusinessRules {
     public MemberBusinessRules(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
+
 
     public void emailMustNotExistWithSameName(String email) {
         Member memberWithSameName = memberRepository.findTop1ByEmailIgnoreCase(email).orElse(null);
@@ -52,4 +55,17 @@ public class MemberBusinessRules {
             throw new BusinessException("Geçerli bir telefon numarası giriniz");
         }
     }
+    public void checkValidMembershipLevel(MembershipLevel membershipLevel) {
+        if (membershipLevel == null) {
+            throw new BusinessException("Membership level cannot be null");
+        }
+
+        // Eğer enum dışında bir değer gelirse (teorik olarak zaten gelmez)
+        boolean isValid = EnumSet.of(MembershipLevel.STANDARD, MembershipLevel.GOLD, MembershipLevel.BANNED)
+                .contains(membershipLevel);
+        if (!isValid) {
+            throw new BusinessException("Invalid membership level: " + membershipLevel);
+        }
+    }
+
 }

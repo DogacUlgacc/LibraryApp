@@ -2,10 +2,8 @@ package com.grup_7.LibraryApp.mapper;
 
 import com.grup_7.LibraryApp.dto.memberDto.request.CreateMemberRequestDto;
 import com.grup_7.LibraryApp.dto.memberDto.request.UpdateMemberRequestDto;
-import com.grup_7.LibraryApp.dto.memberDto.response.CreatedMemberResponseDto;
-import com.grup_7.LibraryApp.dto.memberDto.response.MemberListResponseDto;
-import com.grup_7.LibraryApp.dto.memberDto.response.MemberResponseDto;
-import com.grup_7.LibraryApp.dto.memberDto.response.UpdatedMemberResponseDto;
+import com.grup_7.LibraryApp.dto.memberDto.request.UpdateMembershipLevelRequest;
+import com.grup_7.LibraryApp.dto.memberDto.response.*;
 import com.grup_7.LibraryApp.entity.Member;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -41,5 +39,11 @@ public interface MemberMapper {
     void updateMemberFromDto(UpdateMemberRequestDto dto, @MappingTarget Member member);
 
     UpdatedMemberResponseDto toUpdatedMemberResponseDto(Member member);
-}
 
+    @Mapping(target = "membershipLevel", source = "membershipLevel")
+    void updateMembershipLevelFromDto(UpdateMembershipLevelRequest requestDto,
+                                      @MappingTarget Member member);
+
+    UpdatedMembershipLevelResponse toUpdatedMembershipLevelResponse(Member member);
+
+}

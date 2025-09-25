@@ -8,7 +8,7 @@ import com.grup_7.LibraryApp.enums.book.BookStatus;
 import com.grup_7.LibraryApp.enums.loan.LoanStatus;
 import com.grup_7.LibraryApp.enums.member.MembershipLevel;
 import com.grup_7.LibraryApp.repository.BookRepository;
-import com.grup_7.LibraryApp.repository.FinesRepository;
+import com.grup_7.LibraryApp.repository.FineRepository;
 import com.grup_7.LibraryApp.repository.LoanRepository;
 import com.grup_7.LibraryApp.repository.MemberRepository;
 import org.springframework.stereotype.Component;
@@ -24,19 +24,21 @@ public class LoanBusinessRules {
     private final BookRepository bookRepository;
     private final LoanRepository loanRepository;
     private final MemberBusinessRules memberBusinessRules;
-    private final FinesRepository finesRepository;
+    private final FineRepository fineRepository;
     private static final int STANDARD_DUE_DAYS = 14;
     private static final int GOLD_DUE_DAYS     = 21;
+    private final BookBusinessRules bookBusinessRules;
 
     public LoanBusinessRules(MemberRepository memberRepository,
                              BookRepository bookRepository,
                              LoanRepository loanRepository,
-                             MemberBusinessRules memberBusinessRules, FinesRepository finesRepository) {
+                             MemberBusinessRules memberBusinessRules, FineRepository fineRepository, BookBusinessRules bookBusinessRules) {
         this.memberRepository = memberRepository;
         this.bookRepository = bookRepository;
         this.loanRepository = loanRepository;
         this.memberBusinessRules = memberBusinessRules;
-        this.finesRepository = finesRepository;
+        this.fineRepository = fineRepository;
+        this.bookBusinessRules = bookBusinessRules;
     }
 
     public Loan loanMustExist(Integer id) {
@@ -61,7 +63,7 @@ public class LoanBusinessRules {
         memberBusinessRules.checkLoanLimit(m);
 
         // TODO (FineRepository hazır olunca aç):
-        boolean hasUnpaidFine = finesRepository.existsByReservation_Member_MemberIdAndIsPaidFalse(memberId);
+        boolean hasUnpaidFine = fineRepository.existsByReservation_Member_MemberIdAndIsPaidFalse(memberId);
         if (hasUnpaidFine) throw new BusinessException("Üyenin ödenmemiş cezası var.");
 
 
@@ -71,6 +73,7 @@ public class LoanBusinessRules {
     public Book bookMustBeLoanable(Integer bookId) {
         Book b = bookRepository.findById(bookId)
                 .orElseThrow(() -> new BusinessException("Book bulunamadı: " + bookId));
+        bookBusinessRules.bookMustBeActive(b);
         if (b.getStatus() == BookStatus.INACTIVE) {
             throw new BusinessException("INACTIVE kitap ödünç verilemez.");
         }

@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
     @Entity
     @Table(name = "fines")
-    public class Fines {
+    public class Fine {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +32,9 @@ import java.time.LocalDate;
         private Reservation reservation;
 
 
-        public Fines() {}
+        public Fine() {}
 
-        public Fines(int id, double amount, LocalDate dueDate, boolean isPaid, FineType fineType, Reservation reservation) {
+        public Fine(int id, double amount, LocalDate dueDate, boolean isPaid, FineType fineType, Reservation reservation) {
             this.id = id;
             this.amount = amount;
             this.dueDate = dueDate;

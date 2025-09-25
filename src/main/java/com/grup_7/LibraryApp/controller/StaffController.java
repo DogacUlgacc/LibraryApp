@@ -25,7 +25,6 @@ public class StaffController {
     private final StaffService staffService;
 
 
-
     @GetMapping("/all")
     public List<GetAllStaffResponse> getAll() {
 
@@ -49,6 +48,7 @@ public class StaffController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id) {staffService.deleteStaff(id);
+    public void delete(@PathVariable int id) {
+        staffService.deleteStaff(id);
     }
 }

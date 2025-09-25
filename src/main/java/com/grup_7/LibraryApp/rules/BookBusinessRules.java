@@ -42,6 +42,8 @@ public class BookBusinessRules {
             throw new BusinessException("Mevcut kopya sayısı toplam kopya sayısını aşamaz.");
         }
     }
+
+    //TODO:: kitap durumunu kontrol methodu hiç kullanılmamış loan service'de kontrol edilecek!!!!!
     public void bookMustBeActive(Book book) {
         if (book.getStatus() == BookStatus.INACTIVE) {
             throw new BusinessException("Kitap INACTIVE olduğu için ödünç verilemez veya rezervasyon alınamaz.");
