@@ -8,6 +8,7 @@ import com.grup_7.LibraryApp.enums.book.BookStatus;
 import com.grup_7.LibraryApp.enums.loan.LoanStatus;
 import com.grup_7.LibraryApp.enums.member.MembershipLevel;
 import com.grup_7.LibraryApp.repository.BookRepository;
+import com.grup_7.LibraryApp.repository.FinesRepository;
 import com.grup_7.LibraryApp.repository.LoanRepository;
 import com.grup_7.LibraryApp.repository.MemberRepository;
 import org.springframework.stereotype.Component;
@@ -23,18 +24,19 @@ public class LoanBusinessRules {
     private final BookRepository bookRepository;
     private final LoanRepository loanRepository;
     private final MemberBusinessRules memberBusinessRules;
-
+    private final FinesRepository finesRepository;
     private static final int STANDARD_DUE_DAYS = 14;
     private static final int GOLD_DUE_DAYS     = 21;
 
     public LoanBusinessRules(MemberRepository memberRepository,
                              BookRepository bookRepository,
                              LoanRepository loanRepository,
-                             MemberBusinessRules memberBusinessRules) {
+                             MemberBusinessRules memberBusinessRules, FinesRepository finesRepository) {
         this.memberRepository = memberRepository;
         this.bookRepository = bookRepository;
         this.loanRepository = loanRepository;
         this.memberBusinessRules = memberBusinessRules;
+        this.finesRepository = finesRepository;
     }
 
     public Loan loanMustExist(Integer id) {
@@ -59,8 +61,9 @@ public class LoanBusinessRules {
         memberBusinessRules.checkLoanLimit(m);
 
         // TODO (FineRepository hazır olunca aç):
-        // boolean hasUnpaidFine = fineRepository.existsByMemberIdAndIsPaidFalse(memberId);
-        // if (hasUnpaidFine) throw new BusinessException("Üyenin ödenmemiş cezası var.");
+        boolean hasUnpaidFine = finesRepository.existsByReservation_Member_MemberIdAndIsPaidFalse(memberId);
+        if (hasUnpaidFine) throw new BusinessException("Üyenin ödenmemiş cezası var.");
+
 
         return m;
     }

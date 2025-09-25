@@ -15,5 +15,5 @@ public interface FinesRepository extends JpaRepository<Fines,Integer> {
     boolean existsByReservationMemberMemberIdAndIsPaidFalse(int memberId);
 
 
-
+    boolean existsByReservation_Member_MemberIdAndIsPaidFalse(Integer memberId);
 }

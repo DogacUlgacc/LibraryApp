@@ -1,0 +1,28 @@
+package com.grup_7.LibraryApp.enums.staff;
+
+public enum StaffAuthority {
+    BOOK_CREATE,
+    BOOK_READ,
+    BOOK_UPDATE,
+    BOOK_DELETE,
+
+    MEMBER_CREATE,
+    MEMBER_READ,
+    MEMBER_UPDATE,
+    MEMBER_DELETE,
+
+    RESERVATION_CREATE,
+    RESERVATION_READ,
+    RESERVATION_UPDATE,
+    RESERVATION_DELETE,
+
+    FINES_CREATE,
+    FINES_READ,
+    FINES_UPDATE,
+    FINES_DELETE,
+
+    STAFF_CREATE,
+    STAFF_READ,
+    STAFF_UPDATE,
+    STAFF_DELETE
+}
