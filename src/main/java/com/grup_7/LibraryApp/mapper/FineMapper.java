@@ -7,18 +7,17 @@ import com.grup_7.LibraryApp.dto.finesDto.response.FinesListResponse;
 import com.grup_7.LibraryApp.dto.finesDto.response.UpdateFinesResponse;
 import com.grup_7.LibraryApp.dto.finesDto.response.FinesResponse;
 import com.grup_7.LibraryApp.entity.Fine;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 
 import java.util.List;
-
 @Mapper(componentModel = "spring")
 public interface FineMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "isPaid", constant = "false")
+    @Mapping(target = "paid", constant = "false")  // isPaid değil paid
     @Mapping(target = "reservation.id", source = "reservationId")
     Fine toFinesEntity(CreateFinesRequest request);
 

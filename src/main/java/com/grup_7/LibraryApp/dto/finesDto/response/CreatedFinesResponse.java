@@ -1,5 +1,7 @@
 package com.grup_7.LibraryApp.dto.finesDto.response;
 
+import com.grup_7.LibraryApp.enums.fines.FineType;
+
 import java.time.LocalDate;
 
 public class CreatedFinesResponse {
@@ -8,7 +10,7 @@ public class CreatedFinesResponse {
     private double amount;
     private LocalDate dueDate;
     private boolean isPaid;
-    private String fineType;
+    private FineType fineType;
     private int reservationId;
     private String memberName;     // Üye adı
     private String bookTitle;      // Kitap başlığı
@@ -18,7 +20,7 @@ public class CreatedFinesResponse {
     }
 
 
-    public CreatedFinesResponse(int id, double amount, LocalDate dueDate, boolean isPaid, String fineType, int reservationId, String memberName, String bookTitle) {
+    public CreatedFinesResponse(int id, double amount, LocalDate dueDate, boolean isPaid, FineType fineType, int reservationId, String memberName, String bookTitle) {
         this.id = id;
         this.amount = amount;
         this.dueDate = dueDate;
@@ -61,11 +63,11 @@ public class CreatedFinesResponse {
         isPaid = paid;
     }
 
-    public String getFineType() {
+    public FineType getFineType() {
         return fineType;
     }
 
-    public void setFineType(String fineType) {
+    public void setFineType(FineType fineType) {
         this.fineType = fineType;
     }
 

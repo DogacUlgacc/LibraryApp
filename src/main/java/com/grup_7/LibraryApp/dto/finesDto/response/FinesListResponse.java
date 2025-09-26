@@ -54,13 +54,8 @@ public class FinesListResponse {
         this.dueDate = dueDate;
     }
 
-    public boolean isPaid() {
-        return isPaid;
-    }
-
-    public void setPaid(boolean paid) {
-        isPaid = paid;
-    }
+    public boolean getIsPaid() { return isPaid; }
+    public void setIsPaid(boolean isPaid) { this.isPaid = isPaid; }
 
     public String getFineType() {
         return fineType;

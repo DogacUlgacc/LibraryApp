@@ -25,8 +25,8 @@ public class FineController {
 
     //cezalı üyeleri getirme
     @GetMapping("/members/{memberId}")
-    public List<FinesListResponse> getFinesByMember(@PathVariable int memberId) {
-        return fineService.getFinesByMember(memberId);
+    public List<FinesListResponse> getFinesByMember(@PathVariable int memberId, @RequestParam(required = false) Boolean isPaid) {
+        return fineService.getFinesByMember(memberId,isPaid);
     }
 //cezayı oluşturma
     @PostMapping("/add")

@@ -36,7 +36,6 @@ public class MemberController {
             @RequestParam(required = false) String email) {
         return memberService.getMembers(membershipLevel, email);
     }
-
     @PostMapping()
     public CreatedMemberResponseDto save(@RequestBody CreateMemberRequestDto requestDto) {
         return memberService.save(requestDto);

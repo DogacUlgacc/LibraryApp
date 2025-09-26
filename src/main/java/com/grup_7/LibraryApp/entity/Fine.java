@@ -43,7 +43,6 @@ import java.time.LocalDate;
             this.reservation = reservation;
         }
 
-
         public int getId() { return id; }
         public void setId(int id) { this.id = id; }
 
@@ -53,8 +52,13 @@ import java.time.LocalDate;
         public LocalDate getDueDate() { return dueDate; }
         public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
 
-        public boolean getIsPaid() { return isPaid; }
-        public void setIsPaid(boolean isPaid) { this.isPaid = isPaid; }
+        public boolean isPaid() {
+            return isPaid;
+        }
+
+        public void setPaid(boolean paid) {
+            isPaid = paid;
+        }
 
         public FineType getFineType() { return fineType; }
         public void setFineType(FineType fineType) { this.fineType = fineType; }

@@ -1,6 +1,5 @@
 package com.grup_7.LibraryApp.service;
 
-
 import com.grup_7.LibraryApp.dto.finesDto.request.CreateFinesRequest;
 import com.grup_7.LibraryApp.dto.finesDto.request.UpdateFinesRequest;
 import com.grup_7.LibraryApp.dto.finesDto.response.CreatedFinesResponse;
@@ -29,44 +28,50 @@ public class FineService {
         this.fineRepository = fineRepository;
         this.fineBusinessRules = fineBusinessRules;
         this.fineMapper = fineMapper;
-    };
-
-    //bir üyenin cezasını getirme;
-    public List<FinesListResponse> getFinesByMember(int memberId){
-        List<Fine> fines = fineRepository.findByReservationMemberMemberId(memberId);
-        return fines.stream()
-                .map(fineMapper::toFinesListResponse)
-                .toList();
     }
+
+    public List<FinesListResponse> getFinesByMember(int memberId, Boolean paid) {
+        List<Fine> fines;
+
+        if (paid != null) {
+            // paid parametresi varsa filtreleme yap
+            fines = fineRepository.findByReservationMemberMemberIdAndIsPaid(memberId, paid);
+        } else {
+            // paid parametresi yoksa tüm cezalar
+            fines = fineRepository.findByReservationMemberMemberId(memberId);
+        }
+        return fines.stream().map(fineMapper::toFinesListResponse).toList();
+    }
+
+
     //yeni ceza oluşturma
-    public CreatedFinesResponse createFine(CreateFinesRequest request){
+    public CreatedFinesResponse createFine(CreateFinesRequest request) {
         fineBusinessRules.checkReservationExists(request.getReservationId());
+
         Fine fine = fineMapper.toFinesEntity(request);
         Fine savedFine = fineRepository.save(fine);
         return fineMapper.toCreatedFinesResponse(savedFine);
     }
+
     // cezayı güncelleme
-    public UpdateFinesResponse updateFine(int id, UpdateFinesRequest request){
-        Fine fine = fineRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Ceza bulunamadı." +id));
+    public UpdateFinesResponse updateFine(int id, UpdateFinesRequest request) {
+        Fine fine = fineRepository.findById(id).orElseThrow(() -> new RuntimeException("Ceza bulunamadı." + id));
         fineMapper.updateFinesFromRequest(request, fine);
-            Fine updated  = fineRepository.save(fine);
+        Fine updated = fineRepository.save(fine);
         return fineMapper.toUpdateFinesResponse(updated);
     }
 
     //ceza ödeme
-    public FinesResponse payFine(int id){
-        Fine fine = fineRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ceza bulunamadı." + id));
-        fine.setIsPaid(true);
+    public FinesResponse payFine(int id) {
+        Fine fine = fineRepository.findById(id).orElseThrow(() -> new RuntimeException("Ceza bulunamadı." + id));
+        fine.setPaid(true);
         Fine updated = fineRepository.save(fine);
         return fineMapper.toFinesResponse(updated);
     }
 
     //cezayı silme
-    public void deleteFine(int id){
-        Fine fine = fineRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ceza bulunamadı." +id));
+    public void deleteFine(int id) {
+        Fine fine = fineRepository.findById(id).orElseThrow(() -> new RuntimeException("Ceza bulunamadı." + id));
         fineRepository.delete(fine);
     }
 }
