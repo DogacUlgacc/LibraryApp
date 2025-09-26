@@ -1,17 +1,14 @@
 package com.grup_7.LibraryApp.mapper;
 
-import com.grup_7.LibraryApp.dto.bookDto.request.CreateBookRequest;
 import com.grup_7.LibraryApp.dto.bookDto.response.*;
 import com.grup_7.LibraryApp.entity.Author;
 import com.grup_7.LibraryApp.entity.Book;
 import com.grup_7.LibraryApp.entity.Category;
-import com.grup_7.LibraryApp.entity.Publisher;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
-
 @Mapper(componentModel = "spring")
+
 public interface BookMapper {
 
     List<GetAllBooksDtoResponse> toGetAllBooksDtoResponse(List<Book> books);
@@ -31,5 +28,7 @@ public interface BookMapper {
     BookUpdateDtoResponse toBookUpdateDtoResponse(Book book);
 
     BookStatusUpdatedResponse toBookStatusUpdatedResponse(Book book);
+
+    BookCopiesUpdatedResponse toBookCopiesUpdatedResponse(Book book);
 
 }

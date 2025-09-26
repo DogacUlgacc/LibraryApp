@@ -9,6 +9,7 @@ import com.grup_7.LibraryApp.entity.Author;
 import com.grup_7.LibraryApp.entity.Book;
 import com.grup_7.LibraryApp.entity.Category;
 import com.grup_7.LibraryApp.entity.Publisher;
+import com.grup_7.LibraryApp.enums.book.BookStatus;
 import com.grup_7.LibraryApp.mapper.BookMapper;
 import com.grup_7.LibraryApp.repository.AuthorRepository;
 import com.grup_7.LibraryApp.repository.BookRepository;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -90,7 +92,6 @@ public class BookService {
         return bookMapper.toGetBookByIdDtoResponse(book);
     }
 
-
     public BookUpdateDtoResponse updateBook(int id, BookUpdateDtoRequest req) {
         Book book = bookBusinessRules.bookShouldExistWithGivenId(id);
         bookBusinessRules.availableCopiesMustBeValid(req.getAvailableCopies(), req.getTotalCopies());
@@ -135,4 +136,50 @@ public class BookService {
         return bookMapper.toBookStatusUpdatedResponse(updatedBook);
         
     }
+
+    public BookCopiesUpdatedResponse updateBookCopies(int id, int delta) {
+        Book bookForUpdateCopies = bookBusinessRules.bookShouldExistWithGivenId(id);
+
+        bookBusinessRules.totalCopiesMustBeNonNegative(bookForUpdateCopies.getTotalCopies() + delta);
+
+        bookForUpdateCopies.setTotalCopies(bookForUpdateCopies.getTotalCopies() + delta);
+        Book updatedBook = bookRepository.save(bookForUpdateCopies);
+
+        return bookMapper.toBookCopiesUpdatedResponse(updatedBook);
+    }
+
+    public List<GetAllBooksDtoResponse> getBooks(String isbn, String title, List<Author> authors, BookStatus status) {
+        List<Book> books = bookRepository.findAll();
+
+        if (isbn != null && !isbn.isEmpty()) {
+            books = books.stream()
+                    .filter(b -> b.getIsbn().equalsIgnoreCase(isbn))
+                    .collect(Collectors.toList());
+        }
+
+        if (title != null && !title.isEmpty()) {
+            books = books.stream()
+                    .filter(b -> b.getTitle().toLowerCase().contains(title.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        if (authors != null && !authors.isEmpty()) {
+            books = books.stream()
+                    .filter(b -> b.getAuthors().stream()
+                            .anyMatch(a -> authors.stream()
+                                    .anyMatch(f -> f.getId() == a.getId())))
+                    .collect(Collectors.toList());
+        }
+
+        if (status != null) {
+            books = books.stream()
+                    .filter(b -> b.getStatus() == status)
+                    .collect(Collectors.toList());
+        }
+
+        // **Mapper'ın List metodunu kullan** → hatasız
+        return bookMapper.toGetAllBooksDtoResponse(books);
+    }
+
+
 }

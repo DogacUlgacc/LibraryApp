@@ -48,6 +48,8 @@ public class BookBusinessRules {
         if (book.getStatus() == BookStatus.INACTIVE) {
             throw new BusinessException("Kitap INACTIVE olduğu için ödünç verilemez veya rezervasyon alınamaz.");
         }
+
+
     }
 
 
