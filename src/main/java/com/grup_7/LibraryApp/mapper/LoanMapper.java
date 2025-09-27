@@ -10,7 +10,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
-
 @Mapper(componentModel = "spring")
 public interface LoanMapper {
 
@@ -23,6 +22,7 @@ public interface LoanMapper {
     //Create'den Loan'a
     @Mapping(source = "member.memberId", target = "memberId")
     @Mapping(source = "book.id",   target = "bookId")
+    @Mapping(source = "staff.id", target = "staffId")
     CreatedLoanResponse toCreatedLoanResponse(Loan loan);
 
     //Loan objesinden update'e

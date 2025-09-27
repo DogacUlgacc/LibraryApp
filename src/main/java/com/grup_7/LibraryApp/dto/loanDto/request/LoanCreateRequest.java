@@ -16,13 +16,14 @@ public class LoanCreateRequest {
     private LocalDate loanDate;
 
     @NotNull
-    private Long staffId;
+    private int staffId;
 
-    public @NotNull Long getStaffId() {
+    @NotNull
+    public int getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(@NotNull Long staffId) {
+    public void setStaffId(@NotNull int staffId) {
         this.staffId = staffId;
     }
 

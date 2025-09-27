@@ -19,7 +19,13 @@ public class MemberBusinessRules {
         this.memberRepository = memberRepository;
     }
 
-
+    public Member memberShouldBeExistWithGivenId(int id){
+        Member member = memberRepository.findById(id).orElse(null);
+        if(member == null){
+            throw new BusinessException("Bu id ile bir member bulunamadı!");
+        }
+        return member;
+    }
     public void emailMustNotExistWithSameName(String email) {
         Member memberWithSameName = memberRepository.findTop1ByEmailIgnoreCase(email).orElse(null);
         if (memberWithSameName != null) {

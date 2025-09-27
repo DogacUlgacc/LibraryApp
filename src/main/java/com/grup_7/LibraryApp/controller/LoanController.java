@@ -3,6 +3,7 @@ package com.grup_7.LibraryApp.controller;
 import com.grup_7.LibraryApp.dto.loanDto.request.LoanCreateRequest;
 import com.grup_7.LibraryApp.dto.loanDto.request.LoanReturnRequest;
 import com.grup_7.LibraryApp.dto.loanDto.response.*;
+import com.grup_7.LibraryApp.enums.loan.LoanStatus;
 import com.grup_7.LibraryApp.service.LoanService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,17 @@ public class LoanController {
         return loanService.getList();
     }
 
+    @GetMapping("members/{memberId}")
+    public List<GetAllLoansDtoResponse> getLoansByMemberAndStatus(@PathVariable int memberId,
+                                                                @RequestParam(required = false) LoanStatus status){
+        return loanService.getLoansByMemberAndStatus(memberId,status);
+    }
+
+    //TODO:: BURDA PARAMETRESİZ OLARAK MEMBER_ID ile olan methodu çalıştır şuan aynı olduğu için hata veriyor düzeltilecek!
+    /*@GetMapping("/members/{memberId}")
+    public List<GetAllLoansDtoResponse> getLoansByMember(@PathVariable int memberId){
+     return loanService.getLoansForMember(memberId);
+    }*/
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

@@ -9,18 +9,22 @@ import com.grup_7.LibraryApp.dto.loanDto.response.ReturnedLoanResponse;
 import com.grup_7.LibraryApp.entity.Book;
 import com.grup_7.LibraryApp.entity.Loan;
 import com.grup_7.LibraryApp.entity.Member;
+import com.grup_7.LibraryApp.entity.Staff;
 import com.grup_7.LibraryApp.enums.loan.LoanStatus;
 import com.grup_7.LibraryApp.mapper.LoanMapper;
 import com.grup_7.LibraryApp.repository.BookRepository;
 import com.grup_7.LibraryApp.repository.LoanRepository;
 import com.grup_7.LibraryApp.repository.MemberRepository;
+import com.grup_7.LibraryApp.repository.StaffRepository;
 import com.grup_7.LibraryApp.rules.LoanBusinessRules;
+import com.grup_7.LibraryApp.rules.MemberBusinessRules;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LoanService {
@@ -28,11 +32,15 @@ public class LoanService {
     private final LoanRepository loanRepository;
     private final LoanBusinessRules LoanBusinessrules;
     private final LoanMapper loanMapper;
+    private final StaffRepository staffRepository;
+    private final MemberBusinessRules memberBusinessRules;
 
-    public LoanService(LoanRepository loanRepository, LoanBusinessRules loanBusinessrules, LoanMapper loanMapper) {
+    public LoanService(LoanRepository loanRepository, LoanBusinessRules loanBusinessrules, LoanMapper loanMapper, StaffRepository staffRepository, MemberBusinessRules memberBusinessRules) {
         this.loanRepository = loanRepository;
         LoanBusinessrules = loanBusinessrules;
         this.loanMapper = loanMapper;
+        this.staffRepository = staffRepository;
+        this.memberBusinessRules = memberBusinessRules;
     }
 
 
@@ -50,6 +58,8 @@ public class LoanService {
         Book book = LoanBusinessrules.bookMustBeLoanable(request.getBookId().intValue());
         LoanBusinessrules.mustNotHaveOpenLoanForSameBook(member.getMemberId(), book.getId());
 
+        Staff staff = staffRepository.getReferenceById(request.getStaffId());
+
         // 2) Loan nesnesi
         Loan loan = loanMapper.toLoan(request);
         LocalDate loanDate = (request.getLoanDate() != null) ? request.getLoanDate() : LocalDate.now();
@@ -57,6 +67,8 @@ public class LoanService {
         loan.setMember(member);
         loan.setBook(book);
         loan.setStatus(LoanStatus.OPEN);
+
+        loan.setStaff(staff);
         loan.setDueDate(LoanBusinessrules.calcDueDate(loanDate, member.getMembershipLevel()));
 
         // 3) Kaydet + stok düş
@@ -87,5 +99,18 @@ public class LoanService {
         Loan loan = LoanBusinessrules.loanMustExist(id);
         loanRepository.delete(loan);
         return new DeletedLoanResponse(id);
+    }
+
+    public List<GetAllLoansDtoResponse> getLoansByMemberAndStatus(int memberId, LoanStatus loanStatus) {
+        memberBusinessRules.memberShouldBeExistWithGivenId(memberId);
+
+        List<Loan> loans = loanRepository.findByMember_MemberIdAndStatus(memberId, loanStatus);
+
+        return loanMapper.toGetListLoanResponse(loans);
+    }
+
+    public List<GetAllLoansDtoResponse> getLoansForMember(int memberId) {
+        List<Loan> loans = loanRepository.findByMember_MemberId(memberId);
+    return loanMapper.toGetListLoanResponse(loans);
     }
 }

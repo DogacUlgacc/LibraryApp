@@ -25,4 +25,8 @@ public interface LoanRepository extends JpaRepository<Loan, Integer> {
 
     @Query("select count(l) from Loan l where l.member.memberId = :memberId and l.returnDate is null")
     long countActiveLoansByReturnDateNull(Integer memberId);
+
+    List<Loan> findByMember_MemberIdAndStatus(int memberId, LoanStatus status);
+    List<Loan> findByMember_MemberId(int memberId);
+
 }
